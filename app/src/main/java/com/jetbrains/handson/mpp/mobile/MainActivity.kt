@@ -23,10 +23,14 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
     override fun populateDepartureAndArrivalSpinners(stations: Array<String>) {
         val departureSpinner: Spinner = findViewById(R.id.departure_station_spinner)
         val departureAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, stations)
+        departureAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+
         departureSpinner.adapter = departureAdapter
 
-        val arrivalSpinner: Spinner = findViewById(R.id.departure_station_spinner)
+        val arrivalSpinner: Spinner = findViewById(R.id.arrival_station_spinner)
         val arrivalAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, stations)
+        arrivalAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+
         arrivalSpinner.adapter = arrivalAdapter
     }
 }
