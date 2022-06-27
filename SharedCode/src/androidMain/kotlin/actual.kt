@@ -1,4 +1,4 @@
-package com.jetbrains.handson.mpp.mobile
+ terpackage com.jetbrains.handson.mpp.mobile
 
 import kotlinx.coroutines.Dispatchers
 
