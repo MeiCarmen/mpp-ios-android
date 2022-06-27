@@ -3,17 +3,28 @@ package com.jetbrains.handson.mpp.mobile
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity(), ApplicationContract.View {
 
+    private lateinit var presenter: ApplicationPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        presenter = ApplicationPresenter()
 
-        val presenter = ApplicationPresenter()
         presenter.onViewTaken(this)
+    }
+
+    override fun setStationSubmitButtonText(text: String) {
+        findViewById<Button>(R.id.station_submit_button).text = text
+    }
+
+    override fun setStationSubmitButtonHandler() {
+        findViewById<Button>(R.id.station_submit_button).setOnClickListener { presenter.onStationSubmitButtonPressed() }
     }
 
     override fun setLabel(text: String) {

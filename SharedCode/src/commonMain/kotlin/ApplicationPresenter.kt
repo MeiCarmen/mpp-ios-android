@@ -16,6 +16,8 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
         "EDB"
     )
 
+    private val stationSubmitButtonText = "Search"
+
     override val coroutineContext: CoroutineContext
         get() = dispatchers.main + job
 
@@ -23,5 +25,11 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
         this.view = view
         view.setLabel(createApplicationScreenMessage())
         view.populateDepartureAndArrivalSpinners(stations)
+        view.setStationSubmitButtonText(stationSubmitButtonText)
+        view.setStationSubmitButtonHandler()
+    }
+
+    override fun onStationSubmitButtonPressed() {
+        TODO("Not yet implemented")
     }
 }

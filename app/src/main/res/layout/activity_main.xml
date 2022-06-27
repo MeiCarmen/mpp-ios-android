@@ -32,4 +32,10 @@
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@+id/departure_station_spinner" />
 
+    <Button
+        android:id="@+id/station_submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/arrival_station_spinner"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
