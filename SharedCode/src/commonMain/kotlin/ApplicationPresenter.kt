@@ -8,6 +8,13 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
     private val dispatchers = AppDispatchersImpl()
     private var view: ApplicationContract.View? = null
     private val job: Job = SupervisorJob()
+    private val stations = arrayOf(
+        "BON",
+        "KGX",
+        "EUS",
+        "MAN",
+        "EDB"
+    )
 
     override val coroutineContext: CoroutineContext
         get() = dispatchers.main + job
@@ -15,5 +22,6 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
     override fun onViewTaken(view: ApplicationContract.View) {
         this.view = view
         view.setLabel(createApplicationScreenMessage())
+        view.populateDepartureAndArrivalSpinners(stations)
     }
 }
