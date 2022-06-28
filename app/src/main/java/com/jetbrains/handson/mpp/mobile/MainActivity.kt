@@ -33,10 +33,10 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         findViewById<TextView>(R.id.main_text).text = text
     }
 
-    override fun populateDepartureAndArrivalSpinners(stations: Array<String>) {
+    override fun populateOriginAndDestinationSpinners(stations: Array<String>) {
         // TODO refactor pretty
-        populateSpinner(R.id.departure_station_spinner, stations)
-        populateSpinner(R.id.arrival_station_spinner, stations)
+        populateSpinner(R.id.origin_station_spinner, stations)
+        populateSpinner(R.id.destination_station_spinner, stations)
     }
 
     fun populateSpinner(id: Int, content: Array<String>){
@@ -46,13 +46,13 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         spinner.adapter = adapter
     }
 
-    override fun getDepartureStation(): String {
-        val departureSpinner: Spinner = findViewById(R.id.departure_station_spinner)
+    override fun getOriginStation(): String {
+        val departureSpinner: Spinner = findViewById(R.id.origin_station_spinner)
         return departureSpinner.selectedItem.toString()
     }
 
-    override fun getArrivalStation(): String {
-        val arrivalSpinner: Spinner = findViewById(R.id.arrival_station_spinner)
+    override fun getDestinationStation(): String {
+        val arrivalSpinner: Spinner = findViewById(R.id.destination_station_spinner)
         return arrivalSpinner.selectedItem.toString()
     }
 

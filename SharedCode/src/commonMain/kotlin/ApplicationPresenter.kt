@@ -24,18 +24,18 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
     override fun onViewTaken(view: ApplicationContract.View) {
         this.view = view
         view.setLabel(createApplicationScreenMessage())
-        view.populateDepartureAndArrivalSpinners(stations)
+        view.populateOriginAndDestinationSpinners(stations)
         view.setStationSubmitButtonText(stationSubmitButtonText)
         view.setStationSubmitButtonHandler()
     }
 
     override fun onStationSubmitButtonPressed() {
         // get inputs
-        var departureStation = view?.getDepartureStation()
-        var arrivalStation = view?.getArrivalStation()
+        var originStation = view?.getOriginStation()
+        var destinationStation = view?.getDestinationStation()
         // talk to api
         // send output
-        view?.openUrl("https://www.lner.co.uk/travel-information/travelling-now/live-train-times/depart/${departureStation}/${arrivalStation}/#LiveDepResults")
+        view?.openUrl("https://www.lner.co.uk/travel-information/travelling-now/live-train-times/depart/${originStation}/${destinationStation}/#LiveDepResults")
     }
 
 

@@ -5,11 +5,11 @@ import kotlinx.coroutines.CoroutineScope
 interface ApplicationContract {
     interface View {
         fun setLabel(text: String)
-        fun populateDepartureAndArrivalSpinners(stations: Array<String>)
+        fun populateOriginAndDestinationSpinners(stations: Array<String>)
         fun setStationSubmitButtonHandler()
         fun setStationSubmitButtonText(text: String)
-        fun getDepartureStation() : String
-        fun getArrivalStation() : String
+        fun getOriginStation() : String
+        fun getDestinationStation() : String
         fun openUrl(url: String)
     }
 
