@@ -16,20 +16,49 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <pickerView contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RXM-z9-y0V" userLabel="OriginSpinner">
-                                <rect key="frame" x="0.0" y="44" width="414" height="162"/>
-                            </pickerView>
-                            <pickerView contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="trb-im-Lvs" userLabel="DestinationSpinner">
-                                <rect key="frame" x="0.0" y="201" width="414" height="162"/>
-                            </pickerView>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AIf-eX-2tl" userLabel="SubmitButton">
-                                <rect key="frame" x="20" y="371" width="374" height="31"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Button"/>
-                                <connections>
-                                    <action selector="stationSubmitButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Suf-2h-rPK"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="jUc-54-VfT">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="rSQ-y2-V1E">
+                                        <rect key="frame" x="16" y="16" width="382" height="248"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="wyy-0m-Nxm">
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="216"/>
+                                                <subviews>
+                                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RXM-z9-y0V" userLabel="OriginSpinner">
+                                                        <rect key="frame" x="0.0" y="0.0" width="187.5" height="216"/>
+                                                    </pickerView>
+                                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="trb-im-Lvs" userLabel="DestinationSpinner">
+                                                        <rect key="frame" x="194.5" y="0.0" width="187.5" height="216"/>
+                                                    </pickerView>
+                                                </subviews>
+                                            </stackView>
+                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AIf-eX-2tl" userLabel="SubmitButton">
+                                                <rect key="frame" x="0.0" y="217" width="382" height="31"/>
+                                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="filled" title="Button"/>
+                                                <connections>
+                                                    <action selector="stationSubmitButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Suf-2h-rPK"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="wyy-0m-Nxm" firstAttribute="centerX" secondItem="rSQ-y2-V1E" secondAttribute="centerX" id="gsI-v5-P85"/>
+                                        </constraints>
+                                    </stackView>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zKO-aI-adW">
+                                        <rect key="frame" x="16" y="265" width="382" height="537"/>
+                                        <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
+                                        <viewLayoutGuide key="contentLayoutGuide" id="tUf-vU-SZA"/>
+                                        <viewLayoutGuide key="frameLayoutGuide" id="55j-Cj-5aG"/>
+                                    </scrollView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="rSQ-y2-V1E" firstAttribute="centerX" secondItem="jUc-54-VfT" secondAttribute="centerX" id="5A8-hL-qe0"/>
+                                </constraints>
+                                <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
