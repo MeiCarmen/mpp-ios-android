@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 interface ApplicationContract {
     interface View {
         fun setLabel(text: String)
-        fun populateOriginAndDestinationSpinners(stations: Array<String>)
+        fun populateOriginAndDestinationSpinners(stations: List<String>)
         fun setStationSubmitButtonHandler()
         fun setStationSubmitButtonText(text: String)
         fun getOriginStation() : String

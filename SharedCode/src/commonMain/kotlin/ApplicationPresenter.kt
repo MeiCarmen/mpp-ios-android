@@ -8,7 +8,7 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
     private val dispatchers = AppDispatchersImpl()
     private var view: ApplicationContract.View? = null
     private val job: Job = SupervisorJob()
-    private val stations = arrayOf(
+    private val stations = listOf(
         "BON",
         "KGX",
         "EUS",

@@ -33,13 +33,13 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         findViewById<TextView>(R.id.main_text).text = text
     }
 
-    override fun populateOriginAndDestinationSpinners(stations: Array<String>) {
+    override fun populateOriginAndDestinationSpinners(stations: List<String>) {
         // TODO refactor pretty
         populateSpinner(R.id.origin_station_spinner, stations)
         populateSpinner(R.id.destination_station_spinner, stations)
     }
 
-    fun populateSpinner(id: Int, content: Array<String>){
+    fun populateSpinner(id: Int, content: List<String>){
         val spinner: Spinner = findViewById(id)
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, content)
         adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
