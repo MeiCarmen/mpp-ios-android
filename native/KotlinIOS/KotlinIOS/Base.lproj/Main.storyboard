@@ -48,6 +48,7 @@
                         <outlet property="destinationSpinner" destination="trb-im-Lvs" id="ocd-uz-f6W"/>
                         <outlet property="label" destination="Bvm-TJ-sDP" id="0K4-VH-gLR"/>
                         <outlet property="originSpinner" destination="RXM-z9-y0V" id="AkA-X3-KFp"/>
+                        <outlet property="submitButton" destination="AIf-eX-2tl" id="mBL-NQ-UNo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

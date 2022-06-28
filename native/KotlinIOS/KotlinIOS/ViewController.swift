@@ -4,6 +4,7 @@ import SharedCode
 class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     @IBOutlet weak var originSpinner: UIPickerView!
     @IBOutlet weak var destinationSpinner: UIPickerView!
+    @IBOutlet weak var submitButton: UIButton!
     @IBOutlet private var label: UILabel!
     
     private var stations: [String] = [String]()
@@ -38,23 +39,32 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
 
 extension ViewController: ApplicationContractView {
     func getDestinationStation() -> String {
-        return ""
+        let row = destinationSpinner.selectedRow(inComponent: 0)
+        return stations[row]
     }
     
     func getOriginStation() -> String {
-        return ""
+        let row = originSpinner.selectedRow(inComponent: 0)
+        return stations[row]
     }
     
     func openUrl(url: String) {
+        UIApplication.shared.open(URL(string: url)!)
         return
     }
     
     func setStationSubmitButtonHandler() {
-        return
+        submitButton.addTarget(self, action: #selector(buttonPress(_:)), for: UIControl.Event.touchDown)
     }
     
+    @objc func buttonPress(_ sender: UIButton){
+        // TODO: better method to do this?
+        presenter.onStationSubmitButtonPressed()
+    }
+    
+    
     func setStationSubmitButtonText(text: String) {
-        return
+        submitButton.setTitle(text, for: .normal)
     }
     
     func setLabel(text: String) {
