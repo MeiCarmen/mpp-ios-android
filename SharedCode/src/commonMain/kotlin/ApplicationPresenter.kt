@@ -13,7 +13,7 @@ import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
 import kotlin.coroutines.CoroutineContext
 
-class ApplicationPresenter: ApplicationContract.Presenter() {
+class ApplicationPresenter : ApplicationContract.Presenter() {
     private val stations = listOf(
         "BON",
         "KGX",
@@ -64,7 +64,10 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
             .toString("yyyy-MM-dd'T'HH:mm:ss.SSS") + "+00:00"
     }
 
-    suspend fun queryApiForJourneys(originStation: String, destinationStation: String): DepartureDetails? {
+    suspend fun queryApiForJourneys(
+        originStation: String,
+        destinationStation: String
+    ): DepartureDetails? {
         try {
             val url = URLBuilder("${baseUrl}fares?")
                 .apply {
