@@ -29,12 +29,7 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         findViewById<Button>(R.id.station_submit_button).setOnClickListener { presenter.onStationSubmitButtonPressed() }
     }
 
-    override fun setLabel(text: String) {
-        findViewById<TextView>(R.id.main_text).text = text
-    }
-
     override fun populateOriginAndDestinationSpinners(stations: List<String>) {
-        // TODO refactor pretty
         populateSpinner(R.id.origin_station_spinner, stations)
         populateSpinner(R.id.destination_station_spinner, stations)
     }

@@ -5,7 +5,6 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     @IBOutlet weak var originSpinner: UIPickerView!
     @IBOutlet weak var destinationSpinner: UIPickerView!
     @IBOutlet weak var submitButton: UIButton!
-    @IBOutlet private var label: UILabel!
     
     private var stations: [String] = [String]()
     
@@ -66,11 +65,6 @@ extension ViewController: ApplicationContractView {
     func setStationSubmitButtonText(text: String) {
         submitButton.setTitle(text, for: .normal)
     }
-    
-    func setLabel(text: String) {
-        label.text = text
-    }
-
     
     func populateOriginAndDestinationSpinners(stations: Array<String>) {
         self.stations = stations
