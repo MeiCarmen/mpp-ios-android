@@ -1,13 +1,19 @@
 package com.jetbrains.handson.mpp.mobile
 
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.DateTimeTz
+import com.soywiz.klock.ISO8601
+import com.soywiz.klock.minutes
+import io.ktor.client.*
+import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import kotlinx.coroutines.*
+import kotlinx.serialization.json.Json
 import kotlin.coroutines.CoroutineContext
 
 class ApplicationPresenter: ApplicationContract.Presenter() {
-
-    private val dispatchers = AppDispatchersImpl()
-    private var view: ApplicationContract.View? = null
-    private val job: Job = SupervisorJob()
     private val stations = listOf(
         "BON",
         "KGX",
@@ -18,8 +24,26 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
 
     private val stationSubmitButtonText = "Search"
 
+    private val noChangesDefault = "false"
+    private val numberOfAdultsDefault = "2"
+    private val numberOfChildrenDefault = "0"
+    private val journeyTypeDefault = "single"
+    private val outboundIsArriveByDefault = "false"
+
+    private val baseUrl = "https://mobile-api-softwire2.lner.co.uk/v1/"
+
+    private val dispatchers = AppDispatchersImpl()
+    private var view: ApplicationContract.View? = null
+    private val job: Job = SupervisorJob()
+
     override val coroutineContext: CoroutineContext
         get() = dispatchers.main + job
+
+    private val client = HttpClient {
+        install(JsonFeature) {
+            serializer = KotlinxSerializer(Json.nonstrict)
+        }
+    }
 
     override fun onViewTaken(view: ApplicationContract.View) {
         this.view = view
@@ -28,8 +52,37 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
     }
 
     override fun onStationSubmitButtonPressed(originStation: String, destinationStation: String) {
-        view?.openUrl("https://www.lner.co.uk/travel-information/travelling-now/live-train-times/depart/${originStation}/${destinationStation}/#LiveDepResults")
+        var departures: DepartureDetails?
+        launch {
+            departures = queryApiForJourneys(originStation, destinationStation)
+        }
     }
 
+    fun getImminentDateTime(): String {
+        return (DateTime.now()
+            .add(0, 10000.0))
+            .toString("yyyy-MM-dd'T'HH:mm:ss.SSS") + "+00:00"
+    }
 
+    suspend fun queryApiForJourneys(originStation: String, destinationStation: String): DepartureDetails? {
+        try {
+            val url = URLBuilder("${baseUrl}fares?")
+                .apply {
+                    parameters["originStation"] = originStation
+                    parameters["destinationStation"] = destinationStation
+                    parameters["noChanges"] = noChangesDefault
+                    parameters["numberOfAdults"] = numberOfAdultsDefault
+                    parameters["numberOfChildren"] = numberOfChildrenDefault
+                    parameters["journeyType"] = journeyTypeDefault
+                    parameters["outboundDateTime"] = getImminentDateTime()
+                    parameters["outboundIsArriveBy"] = outboundIsArriveByDefault
+                }
+                .build()
+
+            return client.get<DepartureDetails> { url(url) }
+        } catch (e: Exception) {
+            println(e.toString())
+            return null
+        }
+    }
 }
