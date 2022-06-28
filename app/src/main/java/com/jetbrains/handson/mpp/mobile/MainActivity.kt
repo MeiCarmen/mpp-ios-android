@@ -32,16 +32,26 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
     }
 
     override fun populateDepartureAndArrivalSpinners(stations: Array<String>) {
-        val departureSpinner: Spinner = findViewById(R.id.departure_station_spinner)
-        val departureAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, stations)
-        departureAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
-
-        departureSpinner.adapter = departureAdapter
-
-        val arrivalSpinner: Spinner = findViewById(R.id.arrival_station_spinner)
-        val arrivalAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, stations)
-        arrivalAdapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
-
-        arrivalSpinner.adapter = arrivalAdapter
+        // TODO refactor pretty
+        populateSpinner(R.id.departure_station_spinner, stations)
+        populateSpinner(R.id.arrival_station_spinner, stations)
     }
+
+    fun populateSpinner(id: Int, content: Array<String>){
+        val spinner: Spinner = findViewById(id)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, content)
+        adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+        spinner.adapter = adapter
+    }
+
+    override fun getDepartureStation(): String {
+        val departureSpinner: Spinner = findViewById(R.id.departure_station_spinner)
+        return departureSpinner.selectedItem.toString()
+    }
+
+    override fun getArrivalStation(): String {
+        val arrivalSpinner: Spinner = findViewById(R.id.arrival_station_spinner)
+        return arrivalSpinner.selectedItem.toString()
+    }
+
 }

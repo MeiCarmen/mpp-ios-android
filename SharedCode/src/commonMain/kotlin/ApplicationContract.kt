@@ -8,6 +8,8 @@ interface ApplicationContract {
         fun populateDepartureAndArrivalSpinners(stations: Array<String>)
         fun setStationSubmitButtonHandler()
         fun setStationSubmitButtonText(text: String)
+        fun getDepartureStation() : String
+        fun getArrivalStation() : String
     }
 
     abstract class Presenter: CoroutineScope {

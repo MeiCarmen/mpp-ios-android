@@ -30,6 +30,12 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
     }
 
     override fun onStationSubmitButtonPressed() {
-        TODO("Not yet implemented")
+        // get inputs
+        var departureStation = view?.getDepartureStation()
+        var arrivalStation = view?.getArrivalStation()
+        // talk to api
+        // send output
     }
+
+
 }
