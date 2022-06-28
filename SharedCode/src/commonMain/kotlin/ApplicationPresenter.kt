@@ -35,6 +35,7 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
         var arrivalStation = view?.getArrivalStation()
         // talk to api
         // send output
+        view?.openUrl("https://www.lner.co.uk/travel-information/travelling-now/live-train-times/depart/${departureStation}/${arrivalStation}/#LiveDepResults")
     }
 
 

@@ -1,5 +1,7 @@
 package com.jetbrains.handson.mpp.mobile
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -52,6 +54,12 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
     override fun getArrivalStation(): String {
         val arrivalSpinner: Spinner = findViewById(R.id.arrival_station_spinner)
         return arrivalSpinner.selectedItem.toString()
+    }
+
+    override fun openUrl(url: String) {
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(url)
+        startActivity(i)
     }
 
 }

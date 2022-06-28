@@ -10,6 +10,7 @@ interface ApplicationContract {
         fun setStationSubmitButtonText(text: String)
         fun getDepartureStation() : String
         fun getArrivalStation() : String
+        fun openUrl(url: String)
     }
 
     abstract class Presenter: CoroutineScope {
