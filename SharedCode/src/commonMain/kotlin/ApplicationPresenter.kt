@@ -1,6 +1,6 @@
 package com.jetbrains.handson.mpp.mobile
 
-import com.soywiz.klock.DateTime
+import com.soywiz.klock.*
 import io.ktor.client.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
@@ -65,13 +65,27 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
     fun extractDepartureInfo(departureDetails: DepartureDetails): List<DepartureInformation> {
         return departureDetails.outboundJourneys.map {
             DepartureInformation(
-                it.departureTime,
-                it.arrivalTime,
-                it.journeyDurationInMinutes,
+                extractSimpleTime(it.departureTime),
+                extractSimpleTime(it.arrivalTime),
+                convertToHoursAndMinutes(it.journeyDurationInMinutes),
                 it.primaryTrainOperator.name,
                 convertToPriceString(it.tickets.map { ticket -> ticket.priceInPennies }.min())
             )
         }
+    }
+
+    fun extractSimpleTime(time: String): String{
+        val utcTimeFormat: DateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+        val utcTime = utcTimeFormat.parse(time.split("+").first())
+        val timezoneOffset = time.split("+").last().split(":")
+        val timeZoneHours = timezoneOffset.first().toInt().hours
+        val timeZoneMinutes = timezoneOffset.last().toInt().minutes
+        val localTime = utcTime + timeZoneHours + timeZoneMinutes
+        return localTime.toString("HH:mm")
+    }
+
+    fun convertToHoursAndMinutes(journeyDurationInMinutes: Int): String {
+        return "${journeyDurationInMinutes / 60}h ${journeyDurationInMinutes % 60}min"
     }
 
     fun convertToPriceString(priceInPennies: Int?): String {

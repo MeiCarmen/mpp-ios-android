@@ -62,7 +62,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             cell.departureTime.text = departures[indexPath.row].departureTime
             cell.arrivalTime.text = departures[indexPath.row].arrivalTime
             cell.price.text = departures[indexPath.row].price
-            cell.travelTime.text = String(departures[indexPath.row].journeyTime)
+            cell.travelTime.text = departures[indexPath.row].journeyTime
             cell.primaryOperator.text = departures[indexPath.row].trainOperator
             cell.purchase.setTitle("Buy", for: .normal)
             return cell
