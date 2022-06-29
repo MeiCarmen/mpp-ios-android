@@ -22,7 +22,7 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
     private val stationSubmitButtonText = "Search"
 
     private val noChangesDefault = "false"
-    private val numberOfAdultsDefault = "2"
+    private val numberOfAdultsDefault = "1"
     private val numberOfChildrenDefault = "0"
     private val journeyTypeDefault = "single"
     private val outboundIsArriveByDefault = "false"
@@ -54,12 +54,11 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
         var departureDetails: DepartureDetails? = null
         launch {
             departureDetails = queryApiForJourneys(originStation, destinationStation)
-        }
-
-        if (departureDetails == null) {
-            view?.setDepartureTable(emptyList())
-        } else {
-            view?.setDepartureTable(extractDepartureInfo(departureDetails!!))
+            if (departureDetails == null) {
+                view?.setDepartureTable(emptyList())
+            } else {
+                view?.setDepartureTable(extractDepartureInfo(departureDetails!!))
+            }
         }
     }
 
@@ -82,7 +81,7 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
 
     fun getImminentDateTime(): String {
         return (DateTime.now()
-            .add(0, 10000.0))
+            .add(0, 1000000.0))
             .toString("yyyy-MM-dd'T'HH:mm:ss.SSS") + "+00:00"
     }
 
@@ -103,7 +102,6 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
                     parameters["outboundIsArriveBy"] = outboundIsArriveByDefault
                 }
                 .build()
-
             return client.get<DepartureDetails> { url(url) }
         } catch (e: Exception) {
             println(e.toString())

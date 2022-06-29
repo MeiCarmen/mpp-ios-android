@@ -9,7 +9,13 @@
 import UIKit
 
 class DepartureTableViewCell: UITableViewCell {
-
+    @IBOutlet weak var departureTime: UILabel!
+    @IBOutlet weak var arrivalTime: UILabel!
+    @IBOutlet weak var price: UILabel!
+    @IBOutlet weak var travelTime: UILabel!
+    @IBOutlet weak var primaryOperator: UILabel!
+    @IBOutlet weak var purchase: UIButton!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

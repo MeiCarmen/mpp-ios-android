@@ -83,6 +83,14 @@
                 <constraint firstItem="H2p-sc-9uM" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="jTA-2u-UTQ"/>
                 <constraint firstItem="H2p-sc-9uM" firstAttribute="width" secondItem="KGk-i7-Jjw" secondAttribute="width" id="la5-1r-vjB"/>
             </constraints>
+            <connections>
+                <outlet property="arrivalTime" destination="5LP-2x-rUz" id="hlp-wE-XwJ"/>
+                <outlet property="departureTime" destination="zk6-ti-e8Z" id="bUZ-va-u9p"/>
+                <outlet property="price" destination="7b2-Ko-uWV" id="VdX-z3-xXM"/>
+                <outlet property="primaryOperator" destination="Utu-ia-A7O" id="Ltq-Ny-dqE"/>
+                <outlet property="purchase" destination="7JM-pv-X0j" id="U1O-ax-p1e"/>
+                <outlet property="travelTime" destination="JC6-HK-bPZ" id="gRQ-O8-P4h"/>
+            </connections>
             <point key="canvasLocation" x="137.68115942028987" y="121.20535714285714"/>
         </tableViewCell>
     </objects>

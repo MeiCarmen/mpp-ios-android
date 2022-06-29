@@ -8,6 +8,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var departureTable: UITableView!
     
     private var stations: [String] = [String]()
+    private var departures: [DepartureInformation] = [DepartureInformation]()
     
     private let presenter: ApplicationContractPresenter = ApplicationPresenter()
     
@@ -53,14 +54,20 @@ extension ViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return departures.capacity
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "DepartureTableViewCell") as? DepartureTableViewCell {
+            cell.departureTime.text = departures[indexPath.row].departureTime
+            cell.arrivalTime.text = departures[indexPath.row].arrivalTime
+            cell.price.text = departures[indexPath.row].price
+            cell.travelTime.text = String(departures[indexPath.row].journeyTime)
+            cell.primaryOperator.text = departures[indexPath.row].trainOperator
+            cell.purchase.setTitle("Buy", for: .normal)
             return cell
         }
-        return UITableViewCell()
+        return DepartureTableViewCell()
     }
 
     private func registerTableViewCells() {
@@ -73,12 +80,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension ViewController: ApplicationContractView {
     func setDepartureTable(departures: [DepartureInformation]) {
-        return
+        self.departures = departures
+        departureTable.reloadData()
     }
 
     func openUrl(url: String) {
         UIApplication.shared.open(URL(string: url)!)
-        return
     }
 
     func setStationSubmitButtonText(text: String) {
