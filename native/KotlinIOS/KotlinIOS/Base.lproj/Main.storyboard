@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina5_9" orientation="portrait" appearance="light"/>
+    <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
@@ -14,28 +14,28 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="KotlinIOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="jUc-54-VfT" userLabel="Outer StackView">
-                                <rect key="frame" x="0.0" y="44" width="375" height="734"/>
+                                <rect key="frame" x="0.0" y="5" width="428" height="926"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="rSQ-y2-V1E" userLabel="Input">
-                                        <rect key="frame" x="16" y="16" width="343" height="248"/>
+                                        <rect key="frame" x="16" y="55" width="396" height="248"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="wyy-0m-Nxm" userLabel="Station Selection">
-                                                <rect key="frame" x="0.0" y="0.0" width="343" height="216"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="396" height="216"/>
                                                 <subviews>
                                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RXM-z9-y0V" userLabel="OriginSpinner">
-                                                        <rect key="frame" x="0.0" y="0.0" width="168" height="216"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="194.66666666666666" height="216"/>
                                                     </pickerView>
                                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="trb-im-Lvs" userLabel="DestinationSpinner">
-                                                        <rect key="frame" x="175" y="0.0" width="168" height="216"/>
+                                                        <rect key="frame" x="201.66666666666663" y="0.0" width="194.33333333333337" height="216"/>
                                                     </pickerView>
                                                 </subviews>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AIf-eX-2tl" userLabel="SubmitButton">
-                                                <rect key="frame" x="0.0" y="217" width="343" height="31"/>
+                                                <rect key="frame" x="0.0" y="217" width="396" height="31"/>
                                                 <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="filled" title="Button"/>
@@ -49,10 +49,10 @@
                                         </constraints>
                                     </stackView>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zKO-aI-adW" userLabel="Table ScrollView">
-                                        <rect key="frame" x="16" y="265" width="343" height="453"/>
+                                        <rect key="frame" x="16" y="304" width="396" height="572"/>
                                         <subviews>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="4MC-Jo-faC">
-                                                <rect key="frame" x="0.0" y="0.0" width="343" height="453"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="396" height="572"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             </tableView>
                                         </subviews>
@@ -78,8 +78,10 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="trb-im-Lvs" firstAttribute="top" secondItem="RXM-z9-y0V" secondAttribute="bottom" constant="100" id="SVj-cW-BBd"/>
-                            <constraint firstItem="AIf-eX-2tl" firstAttribute="top" secondItem="trb-im-Lvs" secondAttribute="bottom" constant="8" symbolic="YES" id="vij-f6-5Nt"/>
+                            <constraint firstItem="jUc-54-VfT" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="1CQ-vH-zax"/>
+                            <constraint firstItem="jUc-54-VfT" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="gfZ-Rz-pGU"/>
+                            <constraint firstItem="jUc-54-VfT" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="yqw-rE-nZO"/>
+                            <constraint firstItem="jUc-54-VfT" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="yx8-y1-7gi"/>
                         </constraints>
                     </view>
                     <connections>

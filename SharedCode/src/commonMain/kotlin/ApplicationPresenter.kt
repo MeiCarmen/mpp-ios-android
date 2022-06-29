@@ -74,7 +74,7 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
         }
     }
 
-    fun extractSimpleTime(time: String): String{
+    fun extractSimpleTime(time: String): String {
         val utcTimeFormat: DateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
         val utcTime = utcTimeFormat.parse(time.split("+").first())
         val timezoneOffset = time.split("+").last().split(":")
