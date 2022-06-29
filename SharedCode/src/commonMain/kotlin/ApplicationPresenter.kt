@@ -25,15 +25,9 @@ class ApplicationPresenter: ApplicationContract.Presenter() {
         this.view = view
         view.populateOriginAndDestinationSpinners(stations)
         view.setStationSubmitButtonText(stationSubmitButtonText)
-        view.setStationSubmitButtonHandler()
     }
 
-    override fun onStationSubmitButtonPressed() {
-        // get inputs
-        var originStation = view?.getOriginStation()
-        var destinationStation = view?.getDestinationStation()
-        // talk to api
-        // send output
+    override fun onStationSubmitButtonPressed(originStation: String, destinationStation: String) {
         view?.openUrl("https://www.lner.co.uk/travel-information/travelling-now/live-train-times/depart/${originStation}/${destinationStation}/#LiveDepResults")
     }
 

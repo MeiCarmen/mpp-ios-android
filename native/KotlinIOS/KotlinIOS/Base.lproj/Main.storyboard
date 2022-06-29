@@ -26,6 +26,9 @@
                                 <rect key="frame" x="20" y="371" width="374" height="31"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Button"/>
+                                <connections>
+                                    <action selector="stationSubmitButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Suf-2h-rPK"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
