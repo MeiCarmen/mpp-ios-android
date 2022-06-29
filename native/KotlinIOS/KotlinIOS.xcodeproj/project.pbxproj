@@ -16,6 +16,8 @@
 		47729E2622F447CA00B9B36B /* KotlinIOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47729E2522F447CA00B9B36B /* KotlinIOSUITests.swift */; };
 		47729E6E22F4806C00B9B36B /* SharedCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47729E6D22F4806B00B9B36B /* SharedCode.framework */; };
 		47729E6F22F4806C00B9B36B /* SharedCode.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 47729E6D22F4806B00B9B36B /* SharedCode.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7113CBB286B63CA000FB974 /* DepartureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7113CB9286B63CA000FB974 /* DepartureTableViewCell.swift */; };
+		A7113CBC286B63CA000FB974 /* DepartureTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7113CBA286B63CA000FB974 /* DepartureTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +66,8 @@
 		47729E2522F447CA00B9B36B /* KotlinIOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KotlinIOSUITests.swift; sourceTree = "<group>"; };
 		47729E2722F447CA00B9B36B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		47729E6D22F4806B00B9B36B /* SharedCode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SharedCode.framework; path = "../../SharedCode/build/xcode-frameworks/SharedCode.framework"; sourceTree = "<group>"; };
+		A7113CB9286B63CA000FB974 /* DepartureTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartureTableViewCell.swift; sourceTree = "<group>"; };
+		A7113CBA286B63CA000FB974 /* DepartureTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DepartureTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +126,8 @@
 				47729E0C22F447CA00B9B36B /* Assets.xcassets */,
 				47729E0E22F447CA00B9B36B /* LaunchScreen.storyboard */,
 				47729E1122F447CA00B9B36B /* Info.plist */,
+				A7113CB9286B63CA000FB974 /* DepartureTableViewCell.swift */,
+				A7113CBA286B63CA000FB974 /* DepartureTableViewCell.xib */,
 			);
 			path = KotlinIOS;
 			sourceTree = "<group>";
@@ -252,6 +258,7 @@
 			files = (
 				47729E1022F447CA00B9B36B /* LaunchScreen.storyboard in Resources */,
 				47729E0D22F447CA00B9B36B /* Assets.xcassets in Resources */,
+				A7113CBC286B63CA000FB974 /* DepartureTableViewCell.xib in Resources */,
 				47729E0B22F447C800B9B36B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -298,6 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				47729E0822F447C800B9B36B /* ViewController.swift in Sources */,
+				A7113CBB286B63CA000FB974 /* DepartureTableViewCell.swift in Sources */,
 				47729E0622F447C800B9B36B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
