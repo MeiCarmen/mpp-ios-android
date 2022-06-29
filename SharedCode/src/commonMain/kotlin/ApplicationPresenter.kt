@@ -49,8 +49,6 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
     }
 
     override fun onStationSubmitButtonPressed(originStation: String, destinationStation: String) {
-        var departures: DepartureDetails?
-
         var departureDetails: DepartureDetails? = null
         launch {
             departureDetails = queryApiForJourneys(originStation, destinationStation)
