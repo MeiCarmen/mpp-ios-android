@@ -6,7 +6,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var destinationSpinner: UIPickerView!
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var departureTable: UITableView!
-
+    
     private var stations: [String] = [String]()
     
     private let presenter: ApplicationContractPresenter = ApplicationPresenter()
@@ -72,6 +72,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension ViewController: ApplicationContractView {
+    func setDepartureTable(departures: [DepartureInformation]) {
+        return
+    }
+
     func openUrl(url: String) {
         UIApplication.shared.open(URL(string: url)!)
         return

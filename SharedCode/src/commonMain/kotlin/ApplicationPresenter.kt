@@ -1,9 +1,6 @@
 package com.jetbrains.handson.mpp.mobile
 
 import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeTz
-import com.soywiz.klock.ISO8601
-import com.soywiz.klock.minutes
 import io.ktor.client.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
@@ -53,9 +50,34 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
 
     override fun onStationSubmitButtonPressed(originStation: String, destinationStation: String) {
         var departures: DepartureDetails?
+
+        var departureDetails: DepartureDetails? = null
         launch {
-            departures = queryApiForJourneys(originStation, destinationStation)
+            departureDetails = queryApiForJourneys(originStation, destinationStation)
         }
+
+        if (departureDetails == null) {
+            view?.setDepartureTable(emptyList())
+        } else {
+            view?.setDepartureTable(extractDepartureInfo(departureDetails!!))
+        }
+    }
+
+    fun extractDepartureInfo(departureDetails: DepartureDetails): List<DepartureInformation> {
+        return departureDetails.outboundJourneys.map {
+            DepartureInformation(
+                it.departureTime,
+                it.arrivalTime,
+                it.journeyDurationInMinutes,
+                it.primaryTrainOperator.name,
+                convertToPriceString(it.tickets.map { ticket -> ticket.priceInPennies }.min())
+            )
+        }
+    }
+
+    fun convertToPriceString(priceInPennies: Int?): String {
+        if (priceInPennies == null) return "sold out"
+        return "£${priceInPennies / 100}.${priceInPennies % 100}"
     }
 
     fun getImminentDateTime(): String {

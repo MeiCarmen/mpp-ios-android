@@ -55,4 +55,9 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         startActivity(intent)
     }
 
+    override fun setDepartureTable(departures: List<DepartureInformation>) {
+        //TODO
+        return
+    }
+
 }
