@@ -3,15 +3,15 @@ package com.jetbrains.handson.mpp.mobile
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.departure_cell.view.*
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DepartureCellHolder>() {
     private var departures = emptyList<DepartureInformation>()
 
     fun setDepartures(departures: List<DepartureInformation>) {
         this.departures = departures
-        println(this.departures)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(
@@ -30,14 +30,14 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DepartureCellHolder
 
     override fun getItemCount() = departures.size
 
-    class DepartureCellHolder(private val v: View) : RecyclerView.ViewHolder(v) {
+    class DepartureCellHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         fun update(departure: DepartureInformation) {
-            v.findViewById<TextView>(R.id.departure_time).text = departure.departureTime
-            v.findViewById<TextView>(R.id.arrival_time).text = departure.arrivalTime
-            v.findViewById<TextView>(R.id.price).text = departure.price
-            v.findViewById<TextView>(R.id.travel_time).text = departure.journeyTime
-            v.findViewById<TextView>(R.id.operator).text = departure.trainOperator
-            v.findViewById<TextView>(R.id.purchase).text = "Buy"
+            view.departure_time.text = departure.departureTime
+            view.arrival_time.text = departure.arrivalTime
+            view.price.text = departure.price
+            view.travel_time.text = departure.journeyTime
+            view.operator.text = departure.trainOperator
+            view.purchase.text = "Buy"
         }
     }
 

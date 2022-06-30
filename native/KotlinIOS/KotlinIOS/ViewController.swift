@@ -16,10 +16,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         presenter.onViewTaken(view: self)
 
-        departureTable.delegate = self
-        departureTable.dataSource = self
-        self.registerTableViewCells()
-
+        setUpTable()
         setUpPickers()
     }
 
@@ -53,6 +50,12 @@ extension ViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    func setUpTable() {
+        departureTable.delegate = self
+        departureTable.dataSource = self
+        self.registerTableViewCells()
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return departures.capacity
     }

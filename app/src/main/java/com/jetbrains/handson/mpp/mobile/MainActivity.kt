@@ -5,13 +5,13 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), ApplicationContract.View {
     private lateinit var presenter: ApplicationPresenter
+    private lateinit var recyclerAdapter: RecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,35 +24,33 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
     }
 
     private fun setupSubmitButton() {
-        findViewById<Button>(R.id.station_submit_button).setOnClickListener {
+        station_submit_button.setOnClickListener {
             submitButtonHandler()
         }
     }
 
     private fun submitButtonHandler() {
-        val originStation =
-            findViewById<Spinner>(R.id.origin_station_spinner).selectedItem.toString()
-        val destinationStation =
-            findViewById<Spinner>(R.id.destination_station_spinner).selectedItem.toString()
+        val originStation = origin_station_spinner.selectedItem.toString()
+        val destinationStation = destination_station_spinner.selectedItem.toString()
         presenter.onStationSubmitButtonPressed(originStation, destinationStation)
     }
 
     private fun setupRecyclerView() {
-        recyclerView.adapter = RecyclerAdapter()
+        recyclerAdapter = RecyclerAdapter()
+        recyclerView.adapter = recyclerAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     override fun setStationSubmitButtonText(text: String) {
-        findViewById<Button>(R.id.station_submit_button).text = text
+        station_submit_button.text = text
     }
 
     override fun populateOriginAndDestinationSpinners(stations: List<String>) {
-        populateSpinner(R.id.origin_station_spinner, stations)
-        populateSpinner(R.id.destination_station_spinner, stations)
+        populateSpinner(origin_station_spinner, stations)
+        populateSpinner(destination_station_spinner, stations)
     }
 
-    private fun populateSpinner(id: Int, content: List<String>) {
-        val spinner: Spinner = findViewById(id)
+    private fun populateSpinner(spinner: Spinner, content: List<String>) {
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, content)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.adapter = adapter
@@ -65,8 +63,7 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
     }
 
     override fun setDepartureTable(departures: List<DepartureInformation>) {
-        (recyclerView.adapter as RecyclerAdapter).setDepartures(departures)
-        (recyclerView.adapter as RecyclerAdapter).notifyDataSetChanged()
+        recyclerAdapter.setDepartures(departures)
     }
 
 }

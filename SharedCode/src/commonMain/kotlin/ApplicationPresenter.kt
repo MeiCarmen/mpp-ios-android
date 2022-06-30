@@ -22,13 +22,7 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
     private val stationSubmitButtonText = "View live departures"
     private val stationSubmitButtonLoadingText = "Searching"
 
-    private val noChangesDefault = "false"
-    private val numberOfAdultsDefault = "1"
-    private val numberOfChildrenDefault = "0"
-    private val journeyTypeDefault = "single"
-    private val outboundIsArriveByDefault = "false"
-
-    private val queryOffsetInSeconds = 6*60
+    private val queryOffsetInSeconds = 6 * 60
     private val apiDateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
 
     private val baseUrl = "https://mobile-api-softwire2.lner.co.uk/v1/"
@@ -61,7 +55,7 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
         }
     }
 
-    fun extractDepartureInfo(departureDetails: DepartureDetails?): List<DepartureInformation> {
+    private fun extractDepartureInfo(departureDetails: DepartureDetails?): List<DepartureInformation> {
         if (departureDetails == null) return emptyList()
 
         return departureDetails.outboundJourneys.map {
@@ -75,43 +69,48 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
         }
     }
 
-    fun extractSimpleTime(time: String): String {
+    private fun extractSimpleTime(time: String): String {
         val localTimeFormat = DateFormat(apiDateTimeFormat)
         val timeWithoutTimeZone = time.split("+").first()
         val localTime = localTimeFormat.parse(timeWithoutTimeZone)
         return localTime.toString("HH:mm")
     }
 
-    fun convertToHoursAndMinutes(journeyDurationInMinutes: Int): String {
+    private fun convertToHoursAndMinutes(journeyDurationInMinutes: Int): String {
         return "${journeyDurationInMinutes / 60}h ${journeyDurationInMinutes % 60}min"
     }
 
-    fun convertToPriceString(priceInPennies: Int?): String {
+    private fun convertToPriceString(priceInPennies: Int?): String {
         if (priceInPennies == null) return "sold out"
         return "£${priceInPennies / 100}.${priceInPennies % 100}"
     }
 
-    fun getImminentDateTime(): String {
+    private fun getEarliestSearchableTime(): String {
         return (DateTime.now()
-            .add(0, queryOffsetInSeconds*1000.0))
+            .add(0, queryOffsetInSeconds * 1000.0))
             .toString(apiDateTimeFormat) + "+00:00"
     }
 
-    suspend fun queryApiForJourneys(
+    private suspend fun queryApiForJourneys(
         originStation: String,
-        destinationStation: String
+        destinationStation: String,
+        noChanges: String = "false",
+        numberOfAdults: String = "1",
+        numberOfChildren: String = "0",
+        journeyType: String = "single",
+        outboundIsArriveBy: String = "false"
     ): DepartureDetails? {
         try {
             val url = URLBuilder("${baseUrl}fares?")
                 .apply {
                     parameters["originStation"] = originStation
                     parameters["destinationStation"] = destinationStation
-                    parameters["noChanges"] = noChangesDefault
-                    parameters["numberOfAdults"] = numberOfAdultsDefault
-                    parameters["numberOfChildren"] = numberOfChildrenDefault
-                    parameters["journeyType"] = journeyTypeDefault
-                    parameters["outboundDateTime"] = getImminentDateTime()
-                    parameters["outboundIsArriveBy"] = outboundIsArriveByDefault
+                    parameters["noChanges"] = noChanges
+                    parameters["numberOfAdults"] = numberOfAdults
+                    parameters["numberOfChildren"] = numberOfChildren
+                    parameters["journeyType"] = journeyType
+                    parameters["outboundDateTime"] = getEarliestSearchableTime()
+                    parameters["outboundIsArriveBy"] = outboundIsArriveBy
                 }
                 .build()
             return client.get<DepartureDetails> { url(url) }
