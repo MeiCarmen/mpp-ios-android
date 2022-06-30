@@ -17,12 +17,14 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DepartureCellHolder
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecyclerAdapter.DepartureCellHolder {
-        val cell = LayoutInflater.from(parent?.context).inflate(R.layout.departure_cell, parent, false)
+    ): DepartureCellHolder {
+        val cell =
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.departure_cell, parent, false)
         return DepartureCellHolder(cell)
     }
 
-    override fun onBindViewHolder(holder: RecyclerAdapter.DepartureCellHolder, position: Int) {
+    override fun onBindViewHolder(holder: DepartureCellHolder, position: Int) {
         holder.update(departures[position])
     }
 

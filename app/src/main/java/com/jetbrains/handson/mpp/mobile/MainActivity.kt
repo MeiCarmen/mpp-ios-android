@@ -8,29 +8,25 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), ApplicationContract.View {
-
     private lateinit var presenter: ApplicationPresenter
-    private lateinit var linearLayoutManager: LinearLayoutManager
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         presenter = ApplicationPresenter()
-
         presenter.onViewTaken(this)
 
+        setupSubmitButton()
+        setupRecyclerView()
+    }
+
+    private fun setupSubmitButton() {
         findViewById<Button>(R.id.station_submit_button).setOnClickListener {
             submitButtonHandler()
         }
-
-        linearLayoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = RecyclerAdapter()
-        recyclerView.layoutManager = linearLayoutManager
     }
 
     private fun submitButtonHandler() {
@@ -41,6 +37,10 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         presenter.onStationSubmitButtonPressed(originStation, destinationStation)
     }
 
+    private fun setupRecyclerView() {
+        recyclerView.adapter = RecyclerAdapter()
+        recyclerView.layoutManager = LinearLayoutManager(this)
+    }
 
     override fun setStationSubmitButtonText(text: String) {
         findViewById<Button>(R.id.station_submit_button).text = text

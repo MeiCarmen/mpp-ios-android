@@ -10,7 +10,7 @@ interface ApplicationContract {
         fun setDepartureTable(departures: List<DepartureInformation>)
     }
 
-    abstract class Presenter: CoroutineScope {
+    abstract class Presenter : CoroutineScope {
         abstract fun onViewTaken(view: View)
         abstract fun onStationSubmitButtonPressed(originStation: String, destinationStation: String)
     }

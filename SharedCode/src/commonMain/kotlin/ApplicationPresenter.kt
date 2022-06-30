@@ -19,13 +19,17 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
         "EDB"
     )
 
-    private val stationSubmitButtonText = "Search"
+    private val stationSubmitButtonText = "View live departures"
+    private val stationSubmitButtonLoadingText = "Searching"
 
     private val noChangesDefault = "false"
     private val numberOfAdultsDefault = "1"
     private val numberOfChildrenDefault = "0"
     private val journeyTypeDefault = "single"
     private val outboundIsArriveByDefault = "false"
+
+    private val queryOffsetInSeconds = 6*60
+    private val apiDateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
 
     private val baseUrl = "https://mobile-api-softwire2.lner.co.uk/v1/"
 
@@ -49,21 +53,17 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
     }
 
     override fun onStationSubmitButtonPressed(originStation: String, destinationStation: String) {
-        view?.setStationSubmitButtonText("Searching")
-
-        var departureDetails: DepartureDetails? = null
+        view?.setStationSubmitButtonText(stationSubmitButtonLoadingText)
         launch {
-            departureDetails = queryApiForJourneys(originStation, destinationStation)
-            if (departureDetails == null) {
-                view?.setDepartureTable(emptyList())
-            } else {
-                view?.setDepartureTable(extractDepartureInfo(departureDetails!!))
-            }
+            val departureDetails = queryApiForJourneys(originStation, destinationStation)
+            view?.setDepartureTable(extractDepartureInfo(departureDetails))
             view?.setStationSubmitButtonText(stationSubmitButtonText)
         }
     }
 
-    fun extractDepartureInfo(departureDetails: DepartureDetails): List<DepartureInformation> {
+    fun extractDepartureInfo(departureDetails: DepartureDetails?): List<DepartureInformation> {
+        if (departureDetails == null) return emptyList()
+
         return departureDetails.outboundJourneys.map {
             DepartureInformation(
                 extractSimpleTime(it.departureTime),
@@ -76,8 +76,9 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
     }
 
     fun extractSimpleTime(time: String): String {
-        val localTimeFormat: DateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
-        val localTime = localTimeFormat.parse(time.split("+").first())
+        val localTimeFormat = DateFormat(apiDateTimeFormat)
+        val timeWithoutTimeZone = time.split("+").first()
+        val localTime = localTimeFormat.parse(timeWithoutTimeZone)
         return localTime.toString("HH:mm")
     }
 
@@ -92,8 +93,8 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
 
     fun getImminentDateTime(): String {
         return (DateTime.now()
-            .add(0, 1000000.0))
-            .toString("yyyy-MM-dd'T'HH:mm:ss.SSS") + "+00:00"
+            .add(0, queryOffsetInSeconds*1000.0))
+            .toString(apiDateTimeFormat) + "+00:00"
     }
 
     suspend fun queryApiForJourneys(
