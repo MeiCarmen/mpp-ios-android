@@ -1,30 +1,42 @@
 package com.jetbrains.handson.mpp.mobile
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DepartureCell>() {
+class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DepartureCellHolder>() {
+    private var departures = emptyList<DepartureInformation>()
+
+    fun setDepartures(departures: List<DepartureInformation>) {
+        this.departures = departures
+        println(this.departures)
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecyclerAdapter.DepartureCell {
-        TODO("Not yet implemented")
+    ): RecyclerAdapter.DepartureCellHolder {
+        val cell = LayoutInflater.from(parent?.context).inflate(R.layout.departure_cell, parent, false)
+        return DepartureCellHolder(cell)
     }
 
-    override fun onBindViewHolder(holder: RecyclerAdapter.DepartureCell, position: Int) {
-        TODO("Not yet implemented")
+    override fun onBindViewHolder(holder: RecyclerAdapter.DepartureCellHolder, position: Int) {
+        holder.update(departures[position])
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getItemCount() = departures.size
 
-    class DepartureCell(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener{
-        override fun onClick(p0: View?) {
-            TODO("Not yet implemented")
+    class DepartureCellHolder(private val v: View) : RecyclerView.ViewHolder(v) {
+        fun update(departure: DepartureInformation) {
+            v.findViewById<TextView>(R.id.departure_time).text = departure.departureTime
+            v.findViewById<TextView>(R.id.arrival_time).text = departure.arrivalTime
+            v.findViewById<TextView>(R.id.price).text = departure.price
+            v.findViewById<TextView>(R.id.travel_time).text = departure.journeyTime
+            v.findViewById<TextView>(R.id.operator).text = departure.trainOperator
+            v.findViewById<TextView>(R.id.purchase).text = "Buy"
         }
-
     }
 
 }

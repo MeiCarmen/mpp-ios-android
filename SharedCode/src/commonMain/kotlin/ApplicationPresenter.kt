@@ -49,6 +49,8 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
     }
 
     override fun onStationSubmitButtonPressed(originStation: String, destinationStation: String) {
+        view?.setStationSubmitButtonText("Searching")
+
         var departureDetails: DepartureDetails? = null
         launch {
             departureDetails = queryApiForJourneys(originStation, destinationStation)
@@ -57,6 +59,7 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
             } else {
                 view?.setDepartureTable(extractDepartureInfo(departureDetails!!))
             }
+            view?.setStationSubmitButtonText(stationSubmitButtonText)
         }
     }
 

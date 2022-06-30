@@ -7,11 +7,15 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), ApplicationContract.View {
 
     private lateinit var presenter: ApplicationPresenter
+    private lateinit var linearLayoutManager: LinearLayoutManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +27,10 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         findViewById<Button>(R.id.station_submit_button).setOnClickListener {
             submitButtonHandler()
         }
+
+        linearLayoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = RecyclerAdapter()
+        recyclerView.layoutManager = linearLayoutManager
     }
 
     private fun submitButtonHandler() {
@@ -57,8 +65,8 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
     }
 
     override fun setDepartureTable(departures: List<DepartureInformation>) {
-        //todo
-        return
+        (recyclerView.adapter as RecyclerAdapter).setDepartures(departures)
+        (recyclerView.adapter as RecyclerAdapter).notifyDataSetChanged()
     }
 
 }
