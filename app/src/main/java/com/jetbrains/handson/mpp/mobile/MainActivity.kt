@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity(), ApplicationContract.View {
 
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
     }
 
     override fun setDepartureTable(departures: List<DepartureInformation>) {
-        //TODO
+        //todo
         return
     }
 
