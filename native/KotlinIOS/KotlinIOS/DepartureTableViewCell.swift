@@ -16,11 +16,18 @@ class DepartureTableViewCell: UITableViewCell {
     @IBOutlet weak var primaryOperator: UILabel!
     @IBOutlet weak var purchase: UIButton!
     
+    var purchaseURL: String?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
+    @IBAction func purchaseButtonPressed(_ sender: Any) {
+        if (purchaseURL == nil) {return}
+        UIApplication.shared.open(URL(string: purchaseURL!)!)
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

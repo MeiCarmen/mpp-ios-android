@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.departure_cell.view.*
 
-class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DepartureCellHolder>() {
+class RecyclerAdapter(private val openUrl: (url: String) -> Unit) : RecyclerView.Adapter<RecyclerAdapter.DepartureCellHolder>() {
     private var departures = emptyList<DepartureInformation>()
 
     fun setDepartures(departures: List<DepartureInformation>) {
@@ -25,19 +25,21 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.DepartureCellHolder
     }
 
     override fun onBindViewHolder(holder: DepartureCellHolder, position: Int) {
-        holder.update(departures[position])
+        holder.update(departures[position], openUrl)
     }
 
     override fun getItemCount() = departures.size
 
     class DepartureCellHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        fun update(departure: DepartureInformation) {
+        fun update(departure: DepartureInformation, openUrl: (url: String) -> Unit) {
             view.departure_time.text = departure.departureTime
             view.arrival_time.text = departure.arrivalTime
             view.price.text = departure.price
             view.travel_time.text = departure.journeyTime
             view.operator.text = departure.trainOperator
             view.purchase.text = "Buy"
+
+            view.purchase.setOnClickListener { openUrl(departure.buyUrl) }
         }
     }
 

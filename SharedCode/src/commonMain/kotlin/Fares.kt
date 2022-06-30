@@ -9,11 +9,18 @@ data class DepartureDetails(
 
 @Serializable
 data class JourneyDetails(
+    val originStation: Station,
+    val destinationStation: Station,
     val departureTime: String,
     val arrivalTime: String,
     val primaryTrainOperator: TrainOperatorDetails,
     val tickets: List<TicketDetails>,
     val journeyDurationInMinutes: Int
+)
+
+@Serializable
+data class Station(
+    val crs: String
 )
 
 @Serializable
@@ -31,5 +38,6 @@ data class DepartureInformation(
     val arrivalTime: String,
     val journeyTime: String,
     val trainOperator: String,
-    val price: String
+    val price: String,
+    val buyUrl: String
 )

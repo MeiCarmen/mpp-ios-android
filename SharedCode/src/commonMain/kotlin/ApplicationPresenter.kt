@@ -26,6 +26,7 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
     private val apiDateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
 
     private val baseUrl = "https://mobile-api-softwire2.lner.co.uk/v1/"
+    private val buyTicketsBaseUrl = "https://www.lner.co.uk/buy-tickets/booking-engine/"
 
     private val dispatchers = AppDispatchersImpl()
     private var view: ApplicationContract.View? = null
@@ -64,16 +65,21 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
                 extractSimpleTime(it.arrivalTime),
                 convertToHoursAndMinutes(it.journeyDurationInMinutes),
                 it.primaryTrainOperator.name,
-                convertToPriceString(it.tickets.map { ticket -> ticket.priceInPennies }.min())
+                convertToPriceString(it.tickets.map { ticket -> ticket.priceInPennies }.min()),
+                generateBuyTicketUrl(it.originStation.crs, it.destinationStation.crs, apiTimeToDateTime(it.departureTime))
             )
         }
     }
 
-    private fun extractSimpleTime(time: String): String {
+    private fun apiTimeToDateTime(apiTime: String): DateTime {
         val localTimeFormat = DateFormat(apiDateTimeFormat)
-        val timeWithoutTimeZone = time.split("+").first()
+        val timeWithoutTimeZone = apiTime.split("+").first()
         val localTime = localTimeFormat.parse(timeWithoutTimeZone)
-        return localTime.toString("HH:mm")
+        return localTime.local
+    }
+
+    fun extractSimpleTime(time: String): String {
+        return apiTimeToDateTime(time).toString("HH:mm")
     }
 
     private fun convertToHoursAndMinutes(journeyDurationInMinutes: Int): String {
@@ -82,13 +88,17 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
 
     private fun convertToPriceString(priceInPennies: Int?): String {
         if (priceInPennies == null) return "sold out"
-        return "£${priceInPennies / 100}.${priceInPennies % 100}"
+        return "from £${priceInPennies / 100}.${priceInPennies % 100}"
     }
 
     private fun getEarliestSearchableTime(): String {
         return (DateTime.now()
             .add(0, queryOffsetInSeconds * 1000.0))
             .toString(apiDateTimeFormat) + "+00:00"
+    }
+
+    fun generateBuyTicketUrl(originStation: String, destinationStation: String, departureDateTime: DateTime): String {
+        return buyTicketsBaseUrl + "?ocrs=${originStation}&dcrs=${destinationStation}&outm=${departureDateTime.month1}&outd=${departureDateTime.dayOfMonth}&outh=${departureDateTime.hours}&outmi=${departureDateTime.minutes}&ret=n"
     }
 
     private suspend fun queryApiForJourneys(

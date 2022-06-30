@@ -62,6 +62,9 @@
                                         <rect key="frame" x="213.5" y="0.0" width="106.5" height="24"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="tinted" title="Button"/>
+                                        <connections>
+                                            <action selector="purchaseButtonPressed:" destination="KGk-i7-Jjw" eventType="touchDown" id="PdB-rS-CCh"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>

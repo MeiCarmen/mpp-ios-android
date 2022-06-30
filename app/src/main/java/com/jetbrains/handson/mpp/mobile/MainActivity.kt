@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
     }
 
     private fun setupRecyclerView() {
-        recyclerAdapter = RecyclerAdapter()
+        recyclerAdapter = RecyclerAdapter(::openUrl)
         recyclerView.adapter = recyclerAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         spinner.adapter = adapter
     }
 
-    override fun openUrl(url: String) {
+    fun openUrl(url: String) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         startActivity(intent)
