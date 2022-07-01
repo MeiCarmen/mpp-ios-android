@@ -21,9 +21,12 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Q3J-Oq-r2x">
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                                 <subviews>
-                                    <navigationBar contentMode="scaleToFill" translucent="NO" largeTitles="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F6y-qW-X6v">
-                                        <rect key="frame" x="0.0" y="0.0" width="428" height="104.33333333333333"/>
+                                    <navigationBar contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" translucent="NO" largeTitles="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F6y-qW-X6v">
+                                        <rect key="frame" x="0.0" y="0.0" width="428" height="103.66666666666667"/>
                                         <color key="backgroundColor" name="colorPrimaryDark"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="110" id="Zia-3Z-FeH"/>
+                                        </constraints>
                                         <color key="tintColor" name="background"/>
                                         <color key="barTintColor" name="colorPrimaryDark"/>
                                         <textAttributes key="titleTextAttributes">
@@ -37,26 +40,29 @@
                                         </items>
                                     </navigationBar>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="jUc-54-VfT" userLabel="Outer StackView">
-                                        <rect key="frame" x="0.0" y="109.33333333333331" width="428" height="816.66666666666674"/>
+                                        <rect key="frame" x="0.0" y="108.66666666666669" width="428" height="817.33333333333326"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="rSQ-y2-V1E" userLabel="Input">
-                                                <rect key="frame" x="16" y="16" width="396" height="248"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="rSQ-y2-V1E" userLabel="Input">
+                                                <rect key="frame" x="16" y="16" width="396" height="247"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="wyy-0m-Nxm" userLabel="Station Selection">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" distribution="fillEqually" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="wyy-0m-Nxm" userLabel="Station Selection">
                                                         <rect key="frame" x="0.0" y="0.0" width="396" height="216"/>
                                                         <subviews>
-                                                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RXM-z9-y0V" userLabel="OriginSpinner">
+                                                            <pickerView contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RXM-z9-y0V" userLabel="OriginSpinner">
                                                                 <rect key="frame" x="0.0" y="0.0" width="194.66666666666666" height="216"/>
                                                                 <color key="tintColor" name="text"/>
                                                             </pickerView>
-                                                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="trb-im-Lvs" userLabel="DestinationSpinner">
+                                                            <pickerView contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="trb-im-Lvs" userLabel="DestinationSpinner">
                                                                 <rect key="frame" x="201.66666666666663" y="0.0" width="194.33333333333337" height="216"/>
                                                                 <color key="tintColor" name="text"/>
                                                             </pickerView>
                                                         </subviews>
                                                     </stackView>
                                                     <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AIf-eX-2tl" userLabel="SubmitButton">
-                                                        <rect key="frame" x="0.0" y="217" width="396" height="31"/>
+                                                        <rect key="frame" x="0.0" y="217" width="396" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="30" id="mAi-B1-Vmq"/>
+                                                        </constraints>
                                                         <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="filled" title="Button">
@@ -68,14 +74,14 @@
                                                     </button>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstItem="wyy-0m-Nxm" firstAttribute="centerX" secondItem="rSQ-y2-V1E" secondAttribute="centerX" id="gsI-v5-P85"/>
+                                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="250" id="hpK-tO-mtb"/>
                                                 </constraints>
                                             </stackView>
-                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zKO-aI-adW" userLabel="Table ScrollView">
-                                                <rect key="frame" x="16" y="265" width="396" height="501.66666666666674"/>
+                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zKO-aI-adW" userLabel="Table ScrollView">
+                                                <rect key="frame" x="16" y="264" width="396" height="503.33333333333326"/>
                                                 <subviews>
                                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="4MC-Jo-faC">
-                                                        <rect key="frame" x="0.0" y="0.0" width="396" height="501.66666666666669"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="396" height="503.33333333333331"/>
                                                         <color key="backgroundColor" name="background"/>
                                                         <color key="tintColor" name="secondaryLight"/>
                                                         <color key="separatorColor" name="secondaryLight"/>
@@ -85,6 +91,7 @@
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstItem="55j-Cj-5aG" firstAttribute="trailing" secondItem="4MC-Jo-faC" secondAttribute="trailing" id="FNr-wn-8S9"/>
+                                                    <constraint firstAttribute="bottom" secondItem="4MC-Jo-faC" secondAttribute="bottom" constant="-5.6843418860808015e-14" id="L75-4l-j13"/>
                                                     <constraint firstItem="4MC-Jo-faC" firstAttribute="centerX" secondItem="zKO-aI-adW" secondAttribute="centerX" id="Xwb-7h-KnS"/>
                                                     <constraint firstAttribute="trailing" secondItem="4MC-Jo-faC" secondAttribute="trailing" id="YcE-KI-OxH"/>
                                                     <constraint firstItem="55j-Cj-5aG" firstAttribute="bottom" secondItem="4MC-Jo-faC" secondAttribute="bottom" id="bmQ-dY-QUy"/>
