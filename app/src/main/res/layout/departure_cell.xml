@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
-            android:textSize="36dp"
+            android:textSize="30dp"
             tools:text="@tools:sample/date/hhmm" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
-            android:textSize="36dp"
+            android:textSize="30dp"
             tools:text="@tools:sample/date/hhmm" />
 
         <TextView
@@ -38,7 +38,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
-            android:textSize="18dp"
+            android:textSize="20dp"
             tools:text="@tools:sample/lorem" />
 
     </LinearLayout>
@@ -73,7 +73,8 @@
             android:layout_gravity="center"
             android:background="@drawable/rounded_button"
             tools:text="@tools:sample/full_names"
-            android:minHeight="32dp"/>
+            android:minHeight="32dp"
+            android:textColor="@color/lightText"/>
 
     </LinearLayout>
 </LinearLayout>

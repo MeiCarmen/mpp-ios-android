@@ -2,12 +2,14 @@ package com.jetbrains.handson.mpp.mobile
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity(), ApplicationContract.View {
     private lateinit var presenter: ApplicationPresenter
@@ -39,6 +41,13 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         recyclerAdapter = RecyclerAdapter(::openUrl)
         recyclerView.adapter = recyclerAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                recyclerView.context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+
     }
 
     override fun setStationSubmitButtonText(text: String) {
