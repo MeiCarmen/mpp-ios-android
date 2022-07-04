@@ -53,15 +53,14 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
     override fun onStationSubmitButtonPressed(originStation: String, destinationStation: String) {
         view?.setStationSubmitButtonText(stationSubmitButtonLoadingText)
         launch {
-            val departureDetails = queryApiForJourneys(originStation, destinationStation)
-            view?.setDepartureTable(extractDepartureInfo(departureDetails))
-            view?.setStationSubmitButtonText(stationSubmitButtonText)
+            queryApiForJourneys(originStation, destinationStation)?.let {
+                view?.setDepartureTable(extractDepartureInfo(it))
+                view?.setStationSubmitButtonText(stationSubmitButtonText)
+            }
         }
     }
 
-    private fun extractDepartureInfo(departureDetails: DepartureDetails?): List<DepartureInformation> {
-        if (departureDetails == null) return emptyList()
-
+    private fun extractDepartureInfo(departureDetails: DepartureDetails): List<DepartureInformation> {
         return departureDetails.outboundJourneys.map {
             DepartureInformation(
                 extractSimpleTime(it.departureTime),
@@ -128,13 +127,21 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
                     parameters["outboundIsArriveBy"] = outboundIsArriveBy
                 }
                 .build()
-            return client.get<DepartureDetails> { url(url) }
+            val departures = client.get<DepartureDetails> { url(url) }
+            if (departures.outboundJourneys.isEmpty()) throw NoDeparturesException()
+
+            return departures
         } catch (e: ClientRequestException) {
             val responseText = e.response.readText()
             val json = Json(JsonConfiguration.Stable)
             val description = json.parse(ErrorResponse.serializer(), responseText)
-            view?.presentAlert("Error", description.error_description)
+            view?.presentAlert("Error 💢", description.error_description)
+            return null
+        } catch (e: NoDeparturesException) {
+            view?.presentAlert("🙅 🚂", "No trains found for this route.")
             return null
         }
     }
 }
+
+class NoDeparturesException(): Exception("There are no departures")
