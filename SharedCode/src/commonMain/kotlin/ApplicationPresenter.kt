@@ -97,9 +97,11 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
             .toString(apiDateTimeFormat) + "+00:00"
     }
 
-    fun generateBuyTicketUrl(originStation: String, destinationStation: String, departureDateTime: DateTime): String {
-        return buyTicketsBaseUrl + "?ocrs=${originStation}&dcrs=${destinationStation}&outm=${departureDateTime.month1}&outd=${departureDateTime.dayOfMonth}&outh=${departureDateTime.hours}&outmi=${departureDateTime.minutes}&ret=n"
-    }
+    fun generateBuyTicketUrl(originStation: String, destinationStation: String, departureDateTime: DateTime) =
+        "${buyTicketsBaseUrl}?ocrs=${originStation}&dcrs=${destinationStation}" +
+                "&outm=${departureDateTime.month1}&outd=${departureDateTime.dayOfMonth}" +
+                "&outh=${departureDateTime.hours}&outmi=${departureDateTime.minutes}&ret=n"
+
 
     private suspend fun queryApiForJourneys(
         originStation: String,

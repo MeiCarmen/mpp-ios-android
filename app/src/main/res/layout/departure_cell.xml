@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@drawable/departure_cell">
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
