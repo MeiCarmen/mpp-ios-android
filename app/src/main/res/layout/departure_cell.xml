@@ -17,27 +17,27 @@
             android:id="@+id/departure_time"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/marginSmall"
             android:layout_weight="1"
-            android:textSize="30dp"
+            android:textSize="@dimen/fontSizeLarge"
             tools:text="@tools:sample/date/hhmm" />
 
         <TextView
             android:id="@+id/arrival_time"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/marginSmall"
             android:layout_weight="1"
-            android:textSize="30dp"
+            android:textSize="@dimen/fontSizeLarge"
             tools:text="@tools:sample/date/hhmm" />
 
         <TextView
             android:id="@+id/price"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/marginSmall"
             android:layout_weight="1"
-            android:textSize="20dp"
+            android:textSize="@dimen/fontSizeMedium"
             tools:text="@tools:sample/lorem" />
 
     </LinearLayout>
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             tools:text="@tools:sample/lorem"
-            android:padding="8dp"
+            android:padding="@dimen/marginSmall"
             android:layout_gravity="bottom" />
 
         <TextView
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             tools:text="@tools:sample/lorem"
-            android:padding="8dp" />
+            android:padding="@dimen/marginSmall" />
 
         <Button
             android:id="@+id/purchase"

@@ -7,7 +7,7 @@
             android:padding="2dp">
             <solid android:color="@color/background"/>
             <corners
-                android:radius="8dp"/>
+                android:radius="@dimen/marginSmall"/>
         </shape>
     </item>
 
