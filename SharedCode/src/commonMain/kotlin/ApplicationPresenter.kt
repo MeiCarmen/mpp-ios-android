@@ -94,7 +94,15 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
 
     private fun convertToPriceString(priceInPennies: Int?): String {
         if (priceInPennies == null) return "sold out"
-        return "from £${priceInPennies / 100}.${priceInPennies % 100}"
+        return "from £${priceInPennies / 100}.${padEnd("${priceInPennies % 100}", "0", 2)}"
+    }
+
+    private fun padEnd(numberString: String, padCharacter: String, desiredLength: Int): String {
+        var paddedString = numberString
+        while (paddedString.length < desiredLength) {
+            paddedString += padCharacter
+        }
+        return paddedString
     }
 
     private fun getEarliestSearchableTime(): String {
