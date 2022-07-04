@@ -55,23 +55,27 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
         launch {
             queryApiForJourneys(originStation, destinationStation)?.let {
                 view?.setDepartureTable(extractDepartureInfo(it))
-                view?.setStationSubmitButtonText(stationSubmitButtonText)
             }
+            view?.setStationSubmitButtonText(stationSubmitButtonText)
         }
     }
 
-    private fun extractDepartureInfo(departureDetails: DepartureDetails): List<DepartureInformation> {
-        return departureDetails.outboundJourneys.map {
+    private fun extractDepartureInfo(departureDetails: DepartureDetails): List<DepartureInformation> =
+        departureDetails.outboundJourneys.map {
             DepartureInformation(
                 extractSimpleTime(it.departureTime),
                 extractSimpleTime(it.arrivalTime),
                 convertToHoursAndMinutes(it.journeyDurationInMinutes),
                 it.primaryTrainOperator.name,
                 convertToPriceString(it.tickets.map { ticket -> ticket.priceInPennies }.min()),
-                generateBuyTicketUrl(it.originStation.crs, it.destinationStation.crs, apiTimeToDateTime(it.departureTime))
+                generateBuyTicketUrl(
+                    it.originStation.crs,
+                    it.destinationStation.crs,
+                    apiTimeToDateTime(it.departureTime)
+                )
             )
         }
-    }
+
 
     private fun apiTimeToDateTime(apiTime: String): DateTime {
         val localTimeFormat = DateFormat(apiDateTimeFormat)
@@ -99,7 +103,11 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
             .toString(apiDateTimeFormat) + "+00:00"
     }
 
-    fun generateBuyTicketUrl(originStation: String, destinationStation: String, departureDateTime: DateTime) =
+    fun generateBuyTicketUrl(
+        originStation: String,
+        destinationStation: String,
+        departureDateTime: DateTime
+    ) =
         "${buyTicketsBaseUrl}?ocrs=${originStation}&dcrs=${destinationStation}" +
                 "&outm=${departureDateTime.month1}&outd=${departureDateTime.dayOfMonth}" +
                 "&outh=${departureDateTime.hours}&outmi=${departureDateTime.minutes}&ret=n"
@@ -144,4 +152,4 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
     }
 }
 
-class NoDeparturesException(): Exception("There are no departures")
+class NoDeparturesException() : Exception("There are no departures")
