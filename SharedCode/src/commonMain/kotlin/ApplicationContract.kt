@@ -7,9 +7,10 @@ interface ApplicationContract {
         fun populateOriginAndDestinationSpinners(stations: List<String>)
         fun setStationSubmitButtonText(text: String)
         fun openUrl(url: String)
+        fun setDepartureTable(departures: List<DepartureInformation>)
     }
 
-    abstract class Presenter: CoroutineScope {
+    abstract class Presenter : CoroutineScope {
         abstract fun onViewTaken(view: View)
         abstract fun onStationSubmitButtonPressed(originStation: String, destinationStation: String)
     }
