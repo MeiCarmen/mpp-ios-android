@@ -68,6 +68,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             cell.travelTime.text = departures[indexPath.row].journeyTime
             cell.primaryOperator.text = departures[indexPath.row].trainOperator
             cell.purchase.setTitle("Buy", for: .normal)
+            cell.purchaseURL = departures[indexPath.row].buyUrl
             return cell
         }
         return DepartureTableViewCell()
@@ -85,10 +86,6 @@ extension ViewController: ApplicationContractView {
     func setDepartureTable(departures: [DepartureInformation]) {
         self.departures = departures
         departureTable.reloadData()
-    }
-
-    func openUrl(url: String) {
-        UIApplication.shared.open(URL(string: url)!)
     }
 
     func setStationSubmitButtonText(text: String) {

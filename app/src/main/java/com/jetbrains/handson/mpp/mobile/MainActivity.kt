@@ -2,12 +2,14 @@ package com.jetbrains.handson.mpp.mobile
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity(), ApplicationContract.View {
     private lateinit var presenter: ApplicationPresenter
@@ -36,9 +38,16 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
     }
 
     private fun setupRecyclerView() {
-        recyclerAdapter = RecyclerAdapter()
+        recyclerAdapter = RecyclerAdapter(::openUrl)
         recyclerView.adapter = recyclerAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                recyclerView.context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+
     }
 
     override fun setStationSubmitButtonText(text: String) {
@@ -56,7 +65,7 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         spinner.adapter = adapter
     }
 
-    override fun openUrl(url: String) {
+    fun openUrl(url: String) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         startActivity(intent)

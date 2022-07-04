@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
+    android:layout_margin="@dimen/marginSmall"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -22,14 +22,14 @@
                 android:id="@+id/origin_station_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/marginSmall"
                 android:layout_weight="1" />
 
             <Spinner
                 android:id="@+id/destination_station_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/marginSmall"
                 android:layout_weight="1" />
         </LinearLayout>
 
@@ -37,7 +37,9 @@
             android:id="@+id/station_submit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
+            android:layout_margin="@dimen/marginSmall"
+            android:textColor="@color/lightText"
+            android:background="@drawable/rounded_button"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
