@@ -2,12 +2,15 @@ package com.jetbrains.handson.mpp.mobile
 
 import com.soywiz.klock.*
 import io.ktor.client.*
+import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import kotlin.coroutines.CoroutineContext
 
 class ApplicationPresenter : ApplicationContract.Presenter() {
@@ -126,9 +129,11 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
                 }
                 .build()
             return client.get<DepartureDetails> { url(url) }
-        } catch (e: Exception) {
-            println(e.toString())
-            view?.presentAlert("it gone wrong", "train bad")
+        } catch (e: ClientRequestException) {
+            val responseText = e.response.readText()
+            val json = Json(JsonConfiguration.Stable)
+            val description = json.parse(ErrorResponse.serializer(), responseText)
+            view?.presentAlert("Error", description.error_description)
             return null
         }
     }
