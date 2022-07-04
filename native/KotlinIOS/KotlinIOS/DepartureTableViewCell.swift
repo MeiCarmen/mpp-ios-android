@@ -24,8 +24,9 @@ class DepartureTableViewCell: UITableViewCell {
     }
 
     @IBAction func purchaseButtonPressed(_ sender: Any) {
-        if (purchaseURL == nil) {return}
-        UIApplication.shared.open(URL(string: purchaseURL!)!)
+        if let url = purchaseURL {
+            UIApplication.shared.open(URL(string: url)!)
+        }
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
