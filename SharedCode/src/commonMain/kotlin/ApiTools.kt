@@ -23,27 +23,9 @@ val client = HttpClient {
 class AlertException(val title: String, val description: String) : Exception()
 
 suspend fun queryApiForJourneys(
-    originStation: String,
-    destinationStation: String,
-    noChanges: String = "false",
-    numberOfAdults: String = "1",
-    numberOfChildren: String = "0",
-    journeyType: String = "single",
-    outboundIsArriveBy: String = "false"
+    url: Url
 ): DepartureDetails {
     try {
-        val url = URLBuilder("${baseUrl}fares?")
-            .apply {
-                parameters["originStation"] = originStation
-                parameters["destinationStation"] = destinationStation
-                parameters["noChanges"] = noChanges
-                parameters["numberOfAdults"] = numberOfAdults
-                parameters["numberOfChildren"] = numberOfChildren
-                parameters["journeyType"] = journeyType
-                parameters["outboundDateTime"] = getEarliestSearchableTime()
-                parameters["outboundIsArriveBy"] = outboundIsArriveBy
-            }
-            .build()
         val departures = client.get<DepartureDetails> { url(url) }
         if (departures.outboundJourneys.isEmpty()) throw AlertException(
             "🙅 🚂",
@@ -92,3 +74,24 @@ private fun padEnd(numberString: String, padCharacter: String, desiredLength: In
 fun convertToPriceString(priceInPennies: Int?) = priceInPennies?.let {
     "from £${it / 100}.${padEnd("${it % 100}", "0", 2)}"
 } ?: "sold out"
+
+fun buildQuery(
+    originStation: String,
+    destinationStation: String,
+    noChanges: String = "false",
+    numberOfAdults: String = "1",
+    numberOfChildren: String = "0",
+    journeyType: String = "single",
+    outboundIsArriveBy: String = "false"
+) = URLBuilder("${baseUrl}fares?")
+    .apply {
+        parameters["originStation"] = originStation
+        parameters["destinationStation"] = destinationStation
+        parameters["noChanges"] = noChanges
+        parameters["numberOfAdults"] = numberOfAdults
+        parameters["numberOfChildren"] = numberOfChildren
+        parameters["journeyType"] = journeyType
+        parameters["outboundDateTime"] = getEarliestSearchableTime()
+        parameters["outboundIsArriveBy"] = outboundIsArriveBy
+    }
+    .build()

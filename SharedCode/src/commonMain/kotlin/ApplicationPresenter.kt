@@ -1,16 +1,9 @@
 package com.jetbrains.handson.mpp.mobile
 
-import com.soywiz.klock.*
-import io.ktor.client.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.coroutines.*
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlin.coroutines.CoroutineContext
 
 class ApplicationPresenter : ApplicationContract.Presenter() {
@@ -21,6 +14,9 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
         "MAN",
         "EDB"
     )
+
+    private var queryId = 0
+    private val mutex = Mutex()
 
     private val stationSubmitButtonText = "View live departures"
     private val stationSubmitButtonLoadingText = "Searching"
@@ -41,14 +37,26 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
 
     override fun onStationSubmitButtonPressed(originStation: String, destinationStation: String) {
         launch {
+            var queryUrl = buildQuery(originStation, destinationStation)
+            val departureTable = mutableListOf<DepartureInformation>()
+            var queryOutput: DepartureDetails?
+
             try {
                 view?.setStationSubmitButtonText(stationSubmitButtonLoadingText)
-                queryApiForJourneys(originStation, destinationStation).let {
-                    view?.setDepartureTable(extractDepartureInfo(it))
-                }
-                view?.setStationSubmitButtonText(stationSubmitButtonText)
+
+                val currentQueryId = getNewQueryId()
+                view?.setDepartureTable(departureTable) // clear the table
+                do {
+                    queryOutput = queryApiForJourneys(queryUrl)
+                    view?.setStationSubmitButtonText(stationSubmitButtonText)
+                    if (queryOutput == null) return@launch
+
+                    appendToDepartureTable(departureTable, queryOutput!!, currentQueryId)
+                    queryUrl = Url(baseUrl + "fares" + queryOutput!!.nextOutboundQuery)
+                } while (queryOutput!!.nextOutboundQuery != null)
+
             } catch (e: AlertException) {
-                view?.presentAlert(e.title, e.description)
+                if (departureTable.isEmpty()) view?.presentAlert(e.title, e.description)
             } catch (e: Exception) {
                 view?.presentAlert("Something went wrong 😱", e.toString())
             } finally {
@@ -56,4 +64,25 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
             }
         }
     }
+
+    private suspend fun getNewQueryId(): Int {
+        mutex.withLock {
+            queryId += 1
+            return queryId
+        }
+    }
+
+    private suspend fun appendToDepartureTable(
+        departureTable: MutableList<DepartureInformation>,
+        newDepartureInfo: DepartureDetails,
+        currentQueryId: Int
+    ) {
+        departureTable += extractDepartureInfo(newDepartureInfo)
+        mutex.withLock {
+            if (queryId == currentQueryId) {
+                view?.setDepartureTable(departureTable)
+            }
+        }
+    }
 }
+
