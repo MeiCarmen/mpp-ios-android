@@ -26,7 +26,7 @@ class ViewController: UIViewController {
         presenter.onStationSubmitButtonPressed(originStation: originStation, destinationStation: destinationStation)
     }
     
-    func presentAlert(withTitle title: String, message : String) {
+    func presentAlert(title: String, message : String) {
       let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
       let OKAction = UIAlertAction(title: "OK", style: .default)
       alertController.addAction(OKAction)

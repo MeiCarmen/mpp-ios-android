@@ -128,6 +128,7 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
             return client.get<DepartureDetails> { url(url) }
         } catch (e: Exception) {
             println(e.toString())
+            view?.presentAlert("it gone wrong", "train bad")
             return null
         }
     }

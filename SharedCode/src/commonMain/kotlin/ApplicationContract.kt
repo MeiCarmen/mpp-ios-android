@@ -7,6 +7,7 @@ interface ApplicationContract {
         fun populateOriginAndDestinationSpinners(stations: List<String>)
         fun setStationSubmitButtonText(text: String)
         fun setDepartureTable(departures: List<DepartureInformation>)
+        fun presentAlert(title: String, message: String)
     }
 
     abstract class Presenter : CoroutineScope {
