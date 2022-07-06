@@ -15,16 +15,9 @@ fun apiTimeToDateTime(apiTime: String): DateTime {
     return localTime.local
 }
 
-fun extractSimpleTime(time: String): String {
-    return apiTimeToDateTime(time).toString("HH:mm")
-}
+fun extractSimpleTime(time: String) = apiTimeToDateTime(time).toString("HH:mm")
 
-fun convertToHoursAndMinutes(journeyDurationInMinutes: Int): String {
-    return "${journeyDurationInMinutes / 60}h ${journeyDurationInMinutes % 60}min"
-}
+fun convertToHoursAndMinutes(minutes: Int) = "${minutes / 60}h ${minutes % 60}min"
 
-fun getEarliestSearchableTime(): String {
-    return (DateTime.now()
-        .add(0, queryOffsetInSeconds * 1000.0))
-        .toString(apiDateTimeFormat) + "+00:00"
-}
+fun getEarliestSearchableTime() =
+    (DateTime.now().add(0, queryOffsetInSeconds * 1000.0)).toString(apiDateTimeFormat) + "+00:00"
