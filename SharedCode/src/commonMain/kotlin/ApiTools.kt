@@ -20,41 +20,7 @@ val client = HttpClient {
     }
 }
 
-fun extractDepartureInfo(departureDetails: DepartureDetails): List<DepartureInformation> =
-    departureDetails.outboundJourneys.map {
-        DepartureInformation(
-            extractSimpleTime(it.departureTime),
-            extractSimpleTime(it.arrivalTime),
-            convertToHoursAndMinutes(it.journeyDurationInMinutes),
-            it.primaryTrainOperator.name,
-            convertToPriceString(it.tickets.map { ticket -> ticket.priceInPennies }.min()),
-            generateBuyTicketUrl(
-                it.originStation.crs,
-                it.destinationStation.crs,
-                apiTimeToDateTime(it.departureTime)
-            )
-        )
-    }
-
-fun convertToPriceString(priceInPennies: Int?) = priceInPennies?.let {
-    "from £${it / 100}.${padEnd("${it % 100}", "0", 2)}"
-} ?: "sold out"
-
-fun generateBuyTicketUrl(
-    originStation: String,
-    destinationStation: String,
-    departureDateTime: DateTime
-) = "${buyTicketsBaseUrl}?ocrs=${originStation}&dcrs=${destinationStation}" +
-        "&outm=${departureDateTime.month1}&outd=${departureDateTime.dayOfMonth}" +
-        "&outh=${departureDateTime.hours}&outmi=${departureDateTime.minutes}&ret=n"
-
-private fun padEnd(numberString: String, padCharacter: String, desiredLength: Int): String {
-    var paddedString = numberString
-    while (paddedString.length < desiredLength) {
-        paddedString += padCharacter
-    }
-    return paddedString
-}
+class AlertException(val title: String, val description: String) : Exception()
 
 suspend fun queryApiForJourneys(
     originStation: String,
@@ -91,4 +57,38 @@ suspend fun queryApiForJourneys(
     }
 }
 
-class AlertException(val title: String, val description: String) : Exception()
+fun extractDepartureInfo(departureDetails: DepartureDetails): List<DepartureInformation> =
+    departureDetails.outboundJourneys.map {
+        DepartureInformation(
+            extractSimpleTime(it.departureTime),
+            extractSimpleTime(it.arrivalTime),
+            convertToHoursAndMinutes(it.journeyDurationInMinutes),
+            it.primaryTrainOperator.name,
+            convertToPriceString(it.tickets.map { ticket -> ticket.priceInPennies }.min()),
+            generateBuyTicketUrl(
+                it.originStation.crs,
+                it.destinationStation.crs,
+                apiTimeToDateTime(it.departureTime)
+            )
+        )
+    }
+
+fun generateBuyTicketUrl(
+    originStation: String,
+    destinationStation: String,
+    departureDateTime: DateTime
+) = "${buyTicketsBaseUrl}?ocrs=${originStation}&dcrs=${destinationStation}" +
+        "&outm=${departureDateTime.month1}&outd=${departureDateTime.dayOfMonth}" +
+        "&outh=${departureDateTime.hours}&outmi=${departureDateTime.minutes}&ret=n"
+
+private fun padEnd(numberString: String, padCharacter: String, desiredLength: Int): String {
+    var paddedString = numberString
+    while (paddedString.length < desiredLength) {
+        paddedString += padCharacter
+    }
+    return paddedString
+}
+
+fun convertToPriceString(priceInPennies: Int?) = priceInPennies?.let {
+    "from £${it / 100}.${padEnd("${it % 100}", "0", 2)}"
+} ?: "sold out"
