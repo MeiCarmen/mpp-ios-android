@@ -4,10 +4,8 @@ import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.parse
 
-
 const val queryOffsetInSeconds = 6 * 60
 const val apiDateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
-
 
 fun apiTimeToDateTime(apiTime: String) = DateFormat(apiDateTimeFormat).parse(apiTime).local
 
