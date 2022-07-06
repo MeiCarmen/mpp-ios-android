@@ -3,6 +3,9 @@ package com.jetbrains.handson.mpp.mobile
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class ErrorResponse(val error: String, val error_description: String)
+
+@Serializable
 data class DepartureDetails(
     val outboundJourneys: List<JourneyDetails>
 )

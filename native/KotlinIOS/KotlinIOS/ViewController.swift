@@ -25,6 +25,13 @@ class ViewController: UIViewController {
         let destinationStation = stations[destinationSpinner.selectedRow(inComponent: 0)]
         presenter.onStationSubmitButtonPressed(originStation: originStation, destinationStation: destinationStation)
     }
+    
+    func presentAlert(title: String, message : String) {
+      let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+      let OKAction = UIAlertAction(title: "OK", style: .default)
+      alertController.addAction(OKAction)
+      self.present(alertController, animated: true, completion: nil)
+    }
 }
 
 extension ViewController: UIPickerViewDataSource, UIPickerViewDelegate {

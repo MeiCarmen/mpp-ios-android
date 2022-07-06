@@ -1,5 +1,6 @@
 package com.jetbrains.handson.mpp.mobile
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -73,6 +74,16 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
 
     override fun setDepartureTable(departures: List<DepartureInformation>) {
         recyclerAdapter.setDepartures(departures)
+    }
+
+    override fun presentAlert(title: String, message: String) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Ok"){
+                    dialog, _ -> dialog.dismiss()
+            }
+            .show()
     }
 
 }
