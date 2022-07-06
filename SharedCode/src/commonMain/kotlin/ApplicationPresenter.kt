@@ -25,9 +25,6 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
     private val stationSubmitButtonText = "View live departures"
     private val stationSubmitButtonLoadingText = "Searching"
 
-    private val queryOffsetInSeconds = 6 * 60
-    private val apiDateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
-
     private val baseUrl = "https://mobile-api-softwire2.lner.co.uk/v1/"
     private val buyTicketsBaseUrl = "https://www.lner.co.uk/buy-tickets/booking-engine/"
 
@@ -74,28 +71,11 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
                     apiTimeToDateTime(it.departureTime)
                 )
             )
-        }
-
-
-    private fun apiTimeToDateTime(apiTime: String): DateTime {
-        val localTimeFormat = DateFormat(apiDateTimeFormat)
-        val timeWithoutTimeZone = apiTime.split("+").first()
-        val localTime = localTimeFormat.parse(timeWithoutTimeZone)
-        return localTime.local
-    }
-
-    fun extractSimpleTime(time: String): String {
-        return apiTimeToDateTime(time).toString("HH:mm")
-    }
-
-    private fun convertToHoursAndMinutes(journeyDurationInMinutes: Int): String {
-        return "${journeyDurationInMinutes / 60}h ${journeyDurationInMinutes % 60}min"
-    }
+        } //api
 
     private fun convertToPriceString(priceInPennies: Int?) = priceInPennies?.let {
         "from £${it / 100}.${padEnd("${it % 100}", "0", 2)}"
-    } ?: "sold out"
-
+    } ?: "sold out" // tool api
 
     private fun padEnd(numberString: String, padCharacter: String, desiredLength: Int): String {
         var paddedString = numberString
@@ -103,15 +83,9 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
             paddedString += padCharacter
         }
         return paddedString
-    }
+    } // tool api
 
-    private fun getEarliestSearchableTime(): String {
-        return (DateTime.now()
-            .add(0, queryOffsetInSeconds * 1000.0))
-            .toString(apiDateTimeFormat) + "+00:00"
-    }
-
-    fun generateBuyTicketUrl(
+    fun generateBuyTicketUrl( //api
         originStation: String,
         destinationStation: String,
         departureDateTime: DateTime
@@ -121,7 +95,7 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
                 "&outh=${departureDateTime.hours}&outmi=${departureDateTime.minutes}&ret=n"
 
 
-    private suspend fun queryApiForJourneys(
+    private suspend fun queryApiForJourneys(  // api
         originStation: String,
         destinationStation: String,
         noChanges: String = "false",
@@ -159,4 +133,4 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
     }
 }
 
-class NoDeparturesException() : Exception("There are no departures")
+class NoDeparturesException() : Exception("There are no departures") //api
