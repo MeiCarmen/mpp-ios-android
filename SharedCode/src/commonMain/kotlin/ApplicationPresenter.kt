@@ -92,10 +92,10 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
         return "${journeyDurationInMinutes / 60}h ${journeyDurationInMinutes % 60}min"
     }
 
-    private fun convertToPriceString(priceInPennies: Int?): String {
-        if (priceInPennies == null) return "sold out"
-        return "from £${priceInPennies / 100}.${padEnd("${priceInPennies % 100}", "0", 2)}"
-    }
+    private fun convertToPriceString(priceInPennies: Int?) = priceInPennies?.let {
+        "from £${it / 100}.${padEnd("${it % 100}", "0", 2)}"
+    } ?: "sold out"
+
 
     private fun padEnd(numberString: String, padCharacter: String, desiredLength: Int): String {
         var paddedString = numberString
@@ -148,9 +148,8 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
 
             return departures
         } catch (e: ClientRequestException) {
-            val responseText = e.response.readText()
             val json = Json(JsonConfiguration.Stable)
-            val description = json.parse(ErrorResponse.serializer(), responseText)
+            val description = json.parse(ErrorResponse.serializer(), e.response.readText())
             view?.presentAlert("Error 💢", description.error_description)
             return null
         } catch (e: NoDeparturesException) {
