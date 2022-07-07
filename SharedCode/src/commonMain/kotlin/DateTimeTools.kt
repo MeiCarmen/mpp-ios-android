@@ -4,27 +4,14 @@ import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.parse
 
-
 const val queryOffsetInSeconds = 6 * 60
-const val apiDateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+const val apiDateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
 
-fun apiTimeToDateTime(apiTime: String): DateTime {
-    val localTimeFormat = DateFormat(apiDateTimeFormat)
-    val timeWithoutTimeZone = apiTime.split("+").first()
-    val localTime = localTimeFormat.parse(timeWithoutTimeZone)
-    return localTime.local
-}
+fun apiTimeToDateTime(apiTime: String) = DateFormat(apiDateTimeFormat).parse(apiTime).local
 
-fun extractSimpleTime(time: String): String {
-    return apiTimeToDateTime(time).toString("HH:mm")
-}
+fun extractSimpleTime(time: String) = apiTimeToDateTime(time).toString("HH:mm")
 
-fun convertToHoursAndMinutes(journeyDurationInMinutes: Int): String {
-    return "${journeyDurationInMinutes / 60}h ${journeyDurationInMinutes % 60}min"
-}
+fun convertToHoursAndMinutes(minutes: Int) = "${minutes / 60}h ${minutes % 60}min"
 
-fun getEarliestSearchableTime(): String {
-    return (DateTime.now()
-        .add(0, queryOffsetInSeconds * 1000.0))
-        .toString(apiDateTimeFormat) + "+00:00"
-}
+fun getEarliestSearchableTime() =
+    DateTime.now().add(0, queryOffsetInSeconds * 1000.0).local.toString(apiDateTimeFormat)
