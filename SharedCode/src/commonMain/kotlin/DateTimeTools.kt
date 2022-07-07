@@ -11,7 +11,10 @@ fun apiTimeToDateTime(apiTime: String) = DateFormat(apiDateTimeFormat).parse(api
 
 fun extractSimpleTime(time: String) = apiTimeToDateTime(time).toString("HH:mm")
 
-fun convertToHoursAndMinutes(minutes: Int) = "${minutes / 60}h ${minutes % 60}min"
+fun convertToHoursAndMinutes(minutes: Int): String {
+    if (minutes < 0) throw IllegalArgumentException()
+    return "${minutes / 60}h ${minutes % 60}min"
+}
 
 fun getEarliestSearchableTime() =
     DateTime.now().add(0, queryOffsetInSeconds * 1000.0).local.toString(apiDateTimeFormat)
