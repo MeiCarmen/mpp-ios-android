@@ -1,8 +1,6 @@
 package com.jetbrains.handson.mpp.mobile
 
-import io.ktor.http.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -35,18 +33,19 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
 
     override fun onStationSubmitButtonPressed(originStation: String, destinationStation: String) {
         launch {
-            val departureTable = mutableListOf<DepartureInformation>()
             val currentQueryId = getNewQueryId()
             view?.setStationSubmitButtonText(stationSubmitButtonLoadingText)
-            view?.setDepartureTable(departureTable) // clear the table
+            view?.clearDepartureTable()
+            var firstQuery = true
             try {
                 journeys(originStation, destinationStation)
                     .collect {
-                        appendToDepartureTable(departureTable, it, currentQueryId)
+                        appendToDepartureTable(it, currentQueryId)
                         view?.setStationSubmitButtonText(stationSubmitButtonText)
+                        firstQuery = false
                     }
             } catch (e: AlertException) {
-                if (departureTable.isEmpty()) view?.presentAlert(e.title, e.description)
+                if (firstQuery) view?.presentAlert(e.title, e.description)
             } catch (e: Exception) {
                 view?.presentAlert("Something went wrong 😱", e.toString())
             } finally {
@@ -63,14 +62,12 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
     }
 
     private suspend fun appendToDepartureTable(
-        departureTable: MutableList<DepartureInformation>,
         newDepartureInfo: DepartureInformation,
         currentQueryId: Int
     ) {
-        departureTable += newDepartureInfo
         mutex.withLock {
             if (queryId == currentQueryId) {
-                view?.setDepartureTable(departureTable)
+                view?.appendToDepartureTable(newDepartureInfo)
             }
         }
     }

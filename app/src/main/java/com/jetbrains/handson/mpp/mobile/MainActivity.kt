@@ -55,6 +55,14 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         station_submit_button.text = text
     }
 
+    override fun clearDepartureTable() {
+        recyclerAdapter.clear()
+    }
+
+    override fun appendToDepartureTable(departure: DepartureInformation) {
+        recyclerAdapter.appendToDepartures(departure)
+    }
+
     override fun populateOriginAndDestinationSpinners(stations: List<String>) {
         populateSpinner(origin_station_spinner, stations)
         populateSpinner(destination_station_spinner, stations)
@@ -70,10 +78,6 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         startActivity(intent)
-    }
-
-    override fun setDepartureTable(departures: List<DepartureInformation>) {
-        recyclerAdapter.setDepartures(departures)
     }
 
     override fun presentAlert(title: String, message: String) {

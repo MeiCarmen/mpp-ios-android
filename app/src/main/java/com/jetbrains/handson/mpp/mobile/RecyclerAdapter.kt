@@ -9,8 +9,13 @@ import kotlinx.android.synthetic.main.departure_cell.view.*
 class RecyclerAdapter(private val openUrl: (url: String) -> Unit) : RecyclerView.Adapter<RecyclerAdapter.DepartureCellHolder>() {
     private var departures = emptyList<DepartureInformation>()
 
-    fun setDepartures(departures: List<DepartureInformation>) {
-        this.departures = departures
+    fun appendToDepartures(departure: DepartureInformation) {
+        this.departures += departure
+        notifyItemInserted(this.departures.lastIndex)
+    }
+
+    fun clear() {
+        this.departures = emptyList<DepartureInformation>()
         notifyDataSetChanged()
     }
 

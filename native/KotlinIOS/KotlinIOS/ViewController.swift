@@ -7,8 +7,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var departureTable: UITableView!
     
+    private var departures = [DepartureInformation]()
     private var stations: [String] = [String]()
-    private var departures: [DepartureInformation] = [DepartureInformation]()
     
     private let presenter: ApplicationContractPresenter = ApplicationPresenter()
     
@@ -64,7 +64,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return departures.capacity
+        return departures.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -90,11 +90,16 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension ViewController: ApplicationContractView {
-    func setDepartureTable(departures: [DepartureInformation]) {
-        self.departures = departures
+    func appendToDepartureTable(departure: DepartureInformation) {
+        self.departures.append(departure)
+        departureTable.insertRows(at: [IndexPath(row: departures.count-1, section: 0)], with: .none)
+    }
+    
+    func clearDepartureTable() {
+        self.departures = [DepartureInformation]()
         departureTable.reloadData()
     }
-
+    
     func setStationSubmitButtonText(text: String) {
         submitButton.setTitle(text, for: .normal)
     }
