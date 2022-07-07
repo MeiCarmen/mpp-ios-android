@@ -2,17 +2,15 @@ package com.jetbrains.handson.mpp.mobile
 
 import io.ktor.http.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlin.coroutines.CoroutineContext
 
 class ApplicationPresenter : ApplicationContract.Presenter() {
     private val stations = listOf(
-        "BON",
-        "KGX",
-        "EUS",
-        "MAN",
-        "EDB"
+        "BON", "KGX", "EUS", "MAN", "EDB"
     )
 
     private var queryId = 0
@@ -37,24 +35,16 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
 
     override fun onStationSubmitButtonPressed(originStation: String, destinationStation: String) {
         launch {
-            var queryUrl = buildQuery(originStation, destinationStation)
             val departureTable = mutableListOf<DepartureInformation>()
-            var queryOutput: DepartureDetails?
-
+            val currentQueryId = getNewQueryId()
+            view?.setStationSubmitButtonText(stationSubmitButtonLoadingText)
+            view?.setDepartureTable(departureTable) // clear the table
             try {
-                view?.setStationSubmitButtonText(stationSubmitButtonLoadingText)
-
-                val currentQueryId = getNewQueryId()
-                view?.setDepartureTable(departureTable) // clear the table
-                do {
-                    queryOutput = queryApiForJourneys(queryUrl)
-                    view?.setStationSubmitButtonText(stationSubmitButtonText)
-                    if (queryOutput == null) return@launch
-
-                    appendToDepartureTable(departureTable, queryOutput!!, currentQueryId)
-                    queryUrl = Url(baseUrl + "fares" + queryOutput!!.nextOutboundQuery)
-                } while (queryOutput!!.nextOutboundQuery != null)
-
+                journeys(originStation, destinationStation)
+                    .collect {
+                        appendToDepartureTable(departureTable, it, currentQueryId)
+                        view?.setStationSubmitButtonText(stationSubmitButtonText)
+                    }
             } catch (e: AlertException) {
                 if (departureTable.isEmpty()) view?.presentAlert(e.title, e.description)
             } catch (e: Exception) {

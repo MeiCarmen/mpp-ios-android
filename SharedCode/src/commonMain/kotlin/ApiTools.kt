@@ -10,9 +10,11 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
+import kotlinx.coroutines.flow.flow
 
 const val baseUrl = "https://mobile-api-softwire2.lner.co.uk/v1/"
 const val buyTicketsBaseUrl = "https://www.lner.co.uk/buy-tickets/booking-engine/"
+
 
 val client = HttpClient {
     install(JsonFeature) {
@@ -21,6 +23,16 @@ val client = HttpClient {
 }
 
 class AlertException(val title: String, val description: String) : Exception()
+
+fun journeys(originStation: String, destinationStation: String) = flow {
+    var queryUrl = buildQuery(originStation, destinationStation)
+    var queryOutput: DepartureDetails
+    do {
+        queryOutput = queryApiForJourneys(queryUrl)
+        emit(queryOutput) //todo: one by one
+        queryUrl = Url(baseUrl + "fares" + queryOutput.nextOutboundQuery)
+    } while (queryOutput.nextOutboundQuery != null)
+}
 
 suspend fun queryApiForJourneys(
     url: Url
@@ -38,6 +50,7 @@ suspend fun queryApiForJourneys(
         throw AlertException("Error 💢", description.error_description)
     }
 }
+
 
 fun extractDepartureInfo(departureDetails: DepartureDetails): List<DepartureInformation> =
     departureDetails.outboundJourneys.map {
