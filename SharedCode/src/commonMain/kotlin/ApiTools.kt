@@ -82,7 +82,9 @@ fun generateBuyTicketUrl(
         "&outm=${departureDateTime.month1}&outd=${departureDateTime.dayOfMonth}" +
         "&outh=${departureDateTime.hours}&outmi=${departureDateTime.minutes}&ret=n"
 
-private fun padEnd(numberString: String, padCharacter: String, desiredLength: Int): String {
+
+fun padEnd(numberString: String, padCharacter: Char, desiredLength: Int): String {
+    if (numberString.length>desiredLength) throw IllegalArgumentException()
     var paddedString = numberString
     while (paddedString.length < desiredLength) {
         paddedString += padCharacter
@@ -91,7 +93,7 @@ private fun padEnd(numberString: String, padCharacter: String, desiredLength: In
 }
 
 fun convertToPriceString(priceInPennies: Int?) = priceInPennies?.let {
-    "from £${it / 100}.${padEnd("${it % 100}", "0", 2)}"
+    "from £${it / 100}.${padEnd("${it % 100}", '0', 2)}"
 } ?: "sold out"
 
 fun buildQuery(
