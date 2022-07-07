@@ -64,10 +64,10 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
 
     private suspend fun appendToDepartureTable(
         departureTable: MutableList<DepartureInformation>,
-        newDepartureInfo: DepartureDetails,
+        newDepartureInfo: DepartureInformation,
         currentQueryId: Int
     ) {
-        departureTable += extractDepartureInfo(newDepartureInfo)
+        departureTable += newDepartureInfo
         mutex.withLock {
             if (queryId == currentQueryId) {
                 view?.setDepartureTable(departureTable)

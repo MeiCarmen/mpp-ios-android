@@ -25,13 +25,19 @@ val client = HttpClient {
 class AlertException(val title: String, val description: String) : Exception()
 
 fun journeys(originStation: String, destinationStation: String) = flow {
-    var queryUrl = buildQuery(originStation, destinationStation)
-    var queryOutput: DepartureDetails
+    var queryUrl: Url? = buildQuery(originStation, destinationStation)
     do {
-        queryOutput = queryApiForJourneys(queryUrl)
-        emit(queryOutput) //todo: one by one
-        queryUrl = Url(baseUrl + "fares" + queryOutput.nextOutboundQuery)
-    } while (queryOutput.nextOutboundQuery != null)
+        val (departureInfos, nextQueryUrl) = getDeparturesAndNextQuery(queryUrl!!)
+        departureInfos.forEach { emit(it) }
+        queryUrl = nextQueryUrl
+    } while (queryUrl != null)
+}
+
+suspend fun getDeparturesAndNextQuery(url: Url): Pair<List<DepartureInformation>, Url?> {
+    val queryOutput = queryApiForJourneys(url)
+    return Pair(
+        extractDepartureInfo(queryOutput),
+        queryOutput.nextOutboundQuery?.let { Url(baseUrl + "fares" + it) })
 }
 
 suspend fun queryApiForJourneys(
