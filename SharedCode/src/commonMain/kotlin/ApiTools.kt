@@ -65,7 +65,7 @@ fun extractDepartureInfo(departureDetails: DepartureDetails): List<DepartureInfo
             extractSimpleTime(it.arrivalTime),
             convertToHoursAndMinutes(it.journeyDurationInMinutes),
             it.primaryTrainOperator.name,
-            convertToPriceString(it.tickets.map { ticket -> ticket.priceInPennies }.min()),
+            extractPriceString(it.tickets),
             generateBuyTicketUrl(
                 it.originStation.crs,
                 it.destinationStation.crs,
@@ -84,7 +84,7 @@ fun generateBuyTicketUrl(
 
 
 fun padEnd(numberString: String, padCharacter: Char, desiredLength: Int): String {
-    if (numberString.length>desiredLength) throw IllegalArgumentException()
+    if (numberString.length > desiredLength) throw IllegalArgumentException()
     var paddedString = numberString
     while (paddedString.length < desiredLength) {
         paddedString += padCharacter
@@ -92,9 +92,15 @@ fun padEnd(numberString: String, padCharacter: Char, desiredLength: Int): String
     return paddedString
 }
 
-fun convertToPriceString(priceInPennies: Int?) = priceInPennies?.let {
-    "from £${it / 100}.${padEnd("${it % 100}", '0', 2)}"
-} ?: "sold out"
+fun extractPriceString(tickets: List<TicketDetails>): String {
+    val minPrice = tickets.map { ticket -> ticket.priceInPennies }.min() ?: return "sold out"
+    return "from ${convertToPriceString(minPrice)}"
+}
+
+private fun convertToPriceString(priceInPennies: Int): String {
+    if (priceInPennies < 0) throw IllegalArgumentException()
+    return "£${priceInPennies / 100}.${padEnd("${priceInPennies % 100}", '0', 2)}"
+}
 
 fun buildQuery(
     originStation: String,
@@ -103,6 +109,7 @@ fun buildQuery(
     numberOfAdults: String = "1",
     numberOfChildren: String = "0",
     journeyType: String = "single",
+    outboundDateTime: String = getEarliestSearchableTime(),
     outboundIsArriveBy: String = "false"
 ) = URLBuilder("${baseUrl}fares?")
     .apply {
@@ -112,7 +119,7 @@ fun buildQuery(
         parameters["numberOfAdults"] = numberOfAdults
         parameters["numberOfChildren"] = numberOfChildren
         parameters["journeyType"] = journeyType
-        parameters["outboundDateTime"] = getEarliestSearchableTime()
+        parameters["outboundDateTime"] = outboundDateTime
         parameters["outboundIsArriveBy"] = outboundIsArriveBy
     }
     .build()

@@ -1,7 +1,9 @@
 package com.jetbrains.handson.mpp.mobile
 
 import com.soywiz.klock.DateFormat
+import com.soywiz.klock.DateTime
 import com.soywiz.klock.parse
+import io.ktor.http.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -62,25 +64,47 @@ class ApiToolsTests {
         assertEquals(generateBuyTicketUrl("BON","MAN",inputDateTime), expectedOutput)
     }
 
-    // padEnd
     @Test
     fun padEnd_ThrowsIllegalArgumentException_WhenDesiredLengthLessThanNumberStringLength() {
         assertFailsWith<IllegalArgumentException> { padEnd("10", '0', 1) }
     }
-    // working
+
     @Test
     fun padEnd_ValidExample() {
         assertEquals("7.00", padEnd("7.0", '0', 4))
     }
 
-    // convertToPriceString
-    // input null
-    //input neg
-    // working example
-    // example with no pennies aka check that padded
+    @Test
+    fun extractPriceString_ReturnsSoldOut_WhenInputEmpty() {
+        assertEquals("sold out", extractPriceString(emptyList()))
+    }
 
+    @Test
+    fun extractPriceString_ThrowsIllegalArgumentException_WhenArgumentNegative() {
+        assertFailsWith<IllegalArgumentException> { extractPriceString(listOf(TicketDetails(-234),TicketDetails(234))) }
+    }
 
-    // buildQuery
+    @Test
+    fun extractPriceString_ExtractsTheLowestPrice() {
+        assertEquals("from £1.11", extractPriceString(listOf(TicketDetails(333),TicketDetails(111),TicketDetails(1111))))
+    }
 
+    @Test
+    fun extractPriceString_PenniesPadded() {
+        assertEquals("from £1.00", extractPriceString(listOf(TicketDetails(333),TicketDetails(100),TicketDetails(1111))))
+    }
 
+    @Test
+    fun buildQuery_UsesDefaultValues() {
+        val expectedOutput ="https://mobile-api-softwire2.lner.co.uk/v1/fares?originStation=EDB&destinationStation=KGX&noChanges=false&numberOfAdults=1&numberOfChildren=0&journeyType=single&outboundDateTime=2022-07-24T14%3A30%3A00.000%2B00%3A00&outboundIsArriveBy=false"
+        val inputTime = "2022-07-24T14:30:00.000+00:00"
+        assertEquals(expectedOutput, buildQuery("EDB", "KGX", outboundDateTime = inputTime).toString())
+    }
+
+    @Test
+    fun buildQuery_AccepthOptionalArgs() {
+        val expectedOutput ="https://mobile-api-softwire2.lner.co.uk/v1/fares?originStation=EDB&destinationStation=KGX&noChanges=true&numberOfAdults=2&numberOfChildren=20&journeyType=return&outboundDateTime=2022-07-24T14%3A30%3A00.000%2B00%3A00&outboundIsArriveBy=false"
+        val inputTime = "2022-07-24T14:30:00.000+00:00"
+        assertEquals(expectedOutput, buildQuery("EDB", "KGX", "true", "2","20","return", inputTime, "false").toString())
+    }
 }
