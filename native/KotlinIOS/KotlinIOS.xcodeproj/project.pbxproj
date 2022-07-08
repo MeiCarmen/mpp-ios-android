@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		10A7F22F28785E09007262C0 /* WebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 10A7F22E28785E09007262C0 /* WebView.xib */; };
+		10A7F23128785E21007262C0 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A7F23028785E21007262C0 /* WebView.swift */; };
 		47729E0622F447C800B9B36B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47729E0522F447C800B9B36B /* AppDelegate.swift */; };
 		47729E0822F447C800B9B36B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47729E0722F447C800B9B36B /* ViewController.swift */; };
 		47729E0B22F447C800B9B36B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 47729E0922F447C800B9B36B /* Main.storyboard */; };
@@ -52,6 +54,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		10A7F22E28785E09007262C0 /* WebView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebView.xib; sourceTree = "<group>"; };
+		10A7F23028785E21007262C0 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		47729E0222F447C800B9B36B /* KotlinIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KotlinIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47729E0522F447C800B9B36B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		47729E0722F447C800B9B36B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +132,8 @@
 				47729E1122F447CA00B9B36B /* Info.plist */,
 				A7113CB9286B63CA000FB974 /* DepartureTableViewCell.swift */,
 				A7113CBA286B63CA000FB974 /* DepartureTableViewCell.xib */,
+				10A7F22E28785E09007262C0 /* WebView.xib */,
+				10A7F23028785E21007262C0 /* WebView.swift */,
 			);
 			path = KotlinIOS;
 			sourceTree = "<group>";
@@ -257,6 +263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				47729E1022F447CA00B9B36B /* LaunchScreen.storyboard in Resources */,
+				10A7F22F28785E09007262C0 /* WebView.xib in Resources */,
 				47729E0D22F447CA00B9B36B /* Assets.xcassets in Resources */,
 				A7113CBC286B63CA000FB974 /* DepartureTableViewCell.xib in Resources */,
 				47729E0B22F447C800B9B36B /* Main.storyboard in Resources */,
@@ -305,6 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				47729E0822F447C800B9B36B /* ViewController.swift in Sources */,
+				10A7F23128785E21007262C0 /* WebView.swift in Sources */,
 				A7113CBB286B63CA000FB974 /* DepartureTableViewCell.swift in Sources */,
 				47729E0622F447C800B9B36B /* AppDelegate.swift in Sources */,
 			);

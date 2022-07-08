@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                                 <subviews>
                                     <navigationBar contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" translucent="NO" largeTitles="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F6y-qW-X6v">
-                                        <rect key="frame" x="0.0" y="0.0" width="428" height="103.66666666666667"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="428" height="104.33333333333333"/>
                                         <color key="backgroundColor" name="colorPrimaryDark"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="110" id="Zia-3Z-FeH"/>
@@ -40,7 +40,7 @@
                                         </items>
                                     </navigationBar>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="jUc-54-VfT" userLabel="Outer StackView">
-                                        <rect key="frame" x="0.0" y="108.66666666666669" width="428" height="817.33333333333326"/>
+                                        <rect key="frame" x="0.0" y="109.33333333333331" width="428" height="816.66666666666674"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="rSQ-y2-V1E" userLabel="Input">
                                                 <rect key="frame" x="16" y="16" width="396" height="250"/>
@@ -78,10 +78,10 @@
                                                 </constraints>
                                             </stackView>
                                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zKO-aI-adW" userLabel="Table ScrollView">
-                                                <rect key="frame" x="16" y="267" width="396" height="500.33333333333326"/>
+                                                <rect key="frame" x="16" y="267" width="396" height="499.66666666666674"/>
                                                 <subviews>
                                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="4MC-Jo-faC">
-                                                        <rect key="frame" x="0.0" y="0.0" width="396" height="500.33333333333331"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="396" height="499.66666666666669"/>
                                                         <color key="backgroundColor" name="background"/>
                                                         <color key="tintColor" name="secondaryLight"/>
                                                         <color key="separatorColor" name="secondaryLight"/>

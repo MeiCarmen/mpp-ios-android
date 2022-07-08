@@ -16,7 +16,8 @@ class DepartureTableViewCell: UITableViewCell {
     @IBOutlet weak var primaryOperator: UILabel!
     @IBOutlet weak var purchase: UIButton!
     
-    var purchaseURL: String?
+    var callback: (() -> Void)?
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,9 +25,7 @@ class DepartureTableViewCell: UITableViewCell {
     }
 
     @IBAction func purchaseButtonPressed(_ sender: Any) {
-        if let url = purchaseURL {
-            UIApplication.shared.open(URL(string: url)!)
-        }
+        if (callback != nil) {callback!()}
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

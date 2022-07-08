@@ -75,10 +75,16 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             cell.travelTime.text = departures[indexPath.row].journeyTime
             cell.primaryOperator.text = departures[indexPath.row].trainOperator
             cell.purchase.setTitle("Buy", for: .normal)
-            cell.purchaseURL = departures[indexPath.row].buyUrl
+            cell.callback = { self.openWebView(url: self.departures[indexPath.row].buyUrl)}
             return cell
         }
         return DepartureTableViewCell()
+    }
+    
+    func openWebView(url: String){
+        let webView: WebView = WebView(urlString: url)
+        //self.present(webView, animated: true)
+        present(webView, animated: true)
     }
 
     private func registerTableViewCells() {
