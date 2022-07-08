@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 
+const val EXTRA_BUY_TICKET_URL = "com.jetbrains.handson.mpp.mobile.EXTRA_BUY_TICKET_URL"
+
+
 
 class MainActivity : AppCompatActivity(), ApplicationContract.View {
     private lateinit var presenter: ApplicationPresenter
@@ -74,9 +77,10 @@ class MainActivity : AppCompatActivity(), ApplicationContract.View {
         spinner.adapter = adapter
     }
 
-    fun openUrl(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
+    private fun openUrl(url: String) {
+        val intent = Intent(this, BuyTicketActivity::class.java).apply {
+            putExtra(EXTRA_BUY_TICKET_URL, url)
+        }
         startActivity(intent)
     }
 
