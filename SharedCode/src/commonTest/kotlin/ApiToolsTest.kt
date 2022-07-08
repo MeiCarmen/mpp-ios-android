@@ -52,16 +52,20 @@ class ApiToolsTests {
 
     @Test
     fun generateBuyTicketUrl_SameResults_WhenStationsEmpty() {
-        val inputDateTime = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").parse("2000-04-15T11:14:00.000Z").local
-        val expectedOutput = "https://www.lner.co.uk/buy-tickets/booking-engine/?ocrs=&dcrs=&outm=4&outd=15&outh=11&outmi=14&ret=n"
-        assertEquals(generateBuyTicketUrl("","",inputDateTime), expectedOutput)
+        val inputDateTime =
+            DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").parse("2000-04-15T11:14:00.000Z").local
+        val expectedOutput =
+            "https://www.lner.co.uk/buy-tickets/booking-engine/?ocrs=&dcrs=&outm=4&outd=15&outh=11&outmi=14&ret=n"
+        assertEquals(generateBuyTicketUrl("", "", inputDateTime), expectedOutput)
     }
 
     @Test
     fun generateBuyTicketUrl_ValidExample() {
-        val inputDateTime = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").parse("2000-04-15T11:14:00.000Z").local
-        val expectedOutput = "https://www.lner.co.uk/buy-tickets/booking-engine/?ocrs=BON&dcrs=MAN&outm=4&outd=15&outh=11&outmi=14&ret=n"
-        assertEquals(generateBuyTicketUrl("BON","MAN",inputDateTime), expectedOutput)
+        val inputDateTime =
+            DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").parse("2000-04-15T11:14:00.000Z").local
+        val expectedOutput =
+            "https://www.lner.co.uk/buy-tickets/booking-engine/?ocrs=BON&dcrs=MAN&outm=4&outd=15&outh=11&outmi=14&ret=n"
+        assertEquals(generateBuyTicketUrl("BON", "MAN", inputDateTime), expectedOutput)
     }
 
     @Test
@@ -81,30 +85,51 @@ class ApiToolsTests {
 
     @Test
     fun extractPriceString_ThrowsIllegalArgumentException_WhenArgumentNegative() {
-        assertFailsWith<IllegalArgumentException> { extractPriceString(listOf(TicketDetails(-234),TicketDetails(234))) }
+        assertFailsWith<IllegalArgumentException> {
+            extractPriceString(
+                listOf(
+                    TicketDetails(-234),
+                    TicketDetails(234)
+                )
+            )
+        }
     }
 
     @Test
     fun extractPriceString_ExtractsTheLowestPrice() {
-        assertEquals("from £1.11", extractPriceString(listOf(TicketDetails(333),TicketDetails(111),TicketDetails(1111))))
+        assertEquals(
+            "from £1.11",
+            extractPriceString(listOf(TicketDetails(333), TicketDetails(111), TicketDetails(1111)))
+        )
     }
 
     @Test
     fun extractPriceString_PenniesPadded() {
-        assertEquals("from £1.00", extractPriceString(listOf(TicketDetails(333),TicketDetails(100),TicketDetails(1111))))
+        assertEquals(
+            "from £1.00",
+            extractPriceString(listOf(TicketDetails(333), TicketDetails(100), TicketDetails(1111)))
+        )
     }
 
     @Test
     fun buildQuery_UsesDefaultValues() {
-        val expectedOutput ="https://mobile-api-softwire2.lner.co.uk/v1/fares?originStation=EDB&destinationStation=KGX&noChanges=false&numberOfAdults=1&numberOfChildren=0&journeyType=single&outboundDateTime=2022-07-24T14%3A30%3A00.000%2B00%3A00&outboundIsArriveBy=false"
+        val expectedOutput =
+            "https://mobile-api-softwire2.lner.co.uk/v1/fares?originStation=EDB&destinationStation=KGX&noChanges=false&numberOfAdults=1&numberOfChildren=0&journeyType=single&outboundDateTime=2022-07-24T14%3A30%3A00.000%2B00%3A00&outboundIsArriveBy=false"
         val inputTime = "2022-07-24T14:30:00.000+00:00"
-        assertEquals(expectedOutput, buildQuery("EDB", "KGX", outboundDateTime = inputTime).toString())
+        assertEquals(
+            expectedOutput,
+            buildQuery("EDB", "KGX", outboundDateTime = inputTime).toString()
+        )
     }
 
     @Test
     fun buildQuery_AccepthOptionalArgs() {
-        val expectedOutput ="https://mobile-api-softwire2.lner.co.uk/v1/fares?originStation=EDB&destinationStation=KGX&noChanges=true&numberOfAdults=2&numberOfChildren=20&journeyType=return&outboundDateTime=2022-07-24T14%3A30%3A00.000%2B00%3A00&outboundIsArriveBy=false"
+        val expectedOutput =
+            "https://mobile-api-softwire2.lner.co.uk/v1/fares?originStation=EDB&destinationStation=KGX&noChanges=true&numberOfAdults=2&numberOfChildren=20&journeyType=return&outboundDateTime=2022-07-24T14%3A30%3A00.000%2B00%3A00&outboundIsArriveBy=false"
         val inputTime = "2022-07-24T14:30:00.000+00:00"
-        assertEquals(expectedOutput, buildQuery("EDB", "KGX", "true", "2","20","return", inputTime, "false").toString())
+        assertEquals(
+            expectedOutput,
+            buildQuery("EDB", "KGX", "true", "2", "20", "return", inputTime, "false").toString()
+        )
     }
 }

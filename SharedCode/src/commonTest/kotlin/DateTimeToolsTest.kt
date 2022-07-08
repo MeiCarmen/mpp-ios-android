@@ -26,17 +26,26 @@ class DateTimeToolsTests {
 
     @Test
     fun apiTimeToDateTime_Works_WhenPassedTimeWithNegativeTimeZone() {
-        assertEquals(DateTime.invoke(2000, 4, 15, 11, 14, 0, 0), apiTimeToDateTime("2000-04-15T11:14:00.000-01:00"))
+        assertEquals(
+            DateTime.invoke(2000, 4, 15, 11, 14, 0, 0),
+            apiTimeToDateTime("2000-04-15T11:14:00.000-01:00")
+        )
     }
 
     @Test
     fun apiTimeToDateTime_Works_WhenPassedTimeWithPositiveTimeZone() {
-        assertEquals(DateTime.invoke(2000, 4, 15, 11, 14, 0, 0), apiTimeToDateTime("2000-04-15T11:14:00.000+02:00"))
+        assertEquals(
+            DateTime.invoke(2000, 4, 15, 11, 14, 0, 0),
+            apiTimeToDateTime("2000-04-15T11:14:00.000+02:00")
+        )
     }
 
     @Test
     fun apiTimeToDateTime_Works_WhenPassedTimeEndingInZ() {
-        assertEquals(DateTime.invoke(2000, 4, 15, 11, 14, 0, 0), apiTimeToDateTime("2000-04-15T11:14:00.000Z"))
+        assertEquals(
+            DateTime.invoke(2000, 4, 15, 11, 14, 0, 0),
+            apiTimeToDateTime("2000-04-15T11:14:00.000Z")
+        )
     }
 
     @Test
@@ -91,6 +100,6 @@ class DateTimeToolsTests {
         val actualEarliestTime = apiTimeToDateTime(getEarliestSearchableTime())
 
         // Compare to a precision of 100 milliseconds
-        assertTrue( (actualEarliestTime.unixMillisLong - expectedEarliestTime.unixMillisLong).absoluteValue < 100 )
+        assertTrue((actualEarliestTime.unixMillisLong - expectedEarliestTime.unixMillisLong).absoluteValue < 100)
     }
 }
