@@ -39,6 +39,8 @@ kotlin {
         implementation("io.ktor:ktor-client-logging:${ktor_version}")
         implementation("io.ktor:ktor-client-serialization:${ktor_version}")
         implementation("com.soywiz.korlibs.klock:klock:$klock_version")
+        implementation(kotlin("test-common"))
+        implementation(kotlin("test-annotations-common"))
     }
 
     sourceSets["androidMain"].dependencies {
@@ -52,6 +54,8 @@ kotlin {
         implementation("io.ktor:ktor-client-json-jvm:${ktor_version}")
         implementation("io.ktor:ktor-client-logging-jvm:${ktor_version}")
         implementation("io.ktor:ktor-client-serialization-jvm:${ktor_version}")
+        implementation(kotlin("test-junit"))
+        implementation("junit:junit:4.13.2")
     }
 
     sourceSets["iosMain"].dependencies {

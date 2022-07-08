@@ -7,7 +7,8 @@ data class ErrorResponse(val error: String, val error_description: String)
 
 @Serializable
 data class DepartureDetails(
-    val outboundJourneys: List<JourneyDetails>
+    val outboundJourneys: List<JourneyDetails>,
+    val nextOutboundQuery: String? = null
 )
 
 @Serializable

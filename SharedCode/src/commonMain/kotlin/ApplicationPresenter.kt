@@ -1,26 +1,18 @@
 package com.jetbrains.handson.mpp.mobile
 
-import com.soywiz.klock.*
-import io.ktor.client.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
 import kotlinx.coroutines.*
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlin.coroutines.CoroutineContext
 
 class ApplicationPresenter : ApplicationContract.Presenter() {
     private val stations = listOf(
-        "BON",
-        "KGX",
-        "EUS",
-        "MAN",
-        "EDB"
+        "BON", "KGX", "EUS", "MAN", "EDB"
     )
+
+    private var queryId = 0
+    private val mutex = Mutex()
 
     private val stationSubmitButtonText = "View live departures"
     private val stationSubmitButtonLoadingText = "Searching"
@@ -41,14 +33,19 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
 
     override fun onStationSubmitButtonPressed(originStation: String, destinationStation: String) {
         launch {
+            val currentQueryId = getNewQueryId()
+            view?.setStationSubmitButtonText(stationSubmitButtonLoadingText)
+            view?.clearDepartureTable()
+            var firstQuery = true
             try {
-                view?.setStationSubmitButtonText(stationSubmitButtonLoadingText)
-                queryApiForJourneys(originStation, destinationStation).let {
-                    view?.setDepartureTable(extractDepartureInfo(it))
-                }
-                view?.setStationSubmitButtonText(stationSubmitButtonText)
+                journeys(originStation, destinationStation)
+                    .collect {
+                        appendToDepartureTable(it, currentQueryId)
+                        view?.setStationSubmitButtonText(stationSubmitButtonText)
+                        firstQuery = false
+                    }
             } catch (e: AlertException) {
-                view?.presentAlert(e.title, e.description)
+                if (firstQuery) view?.presentAlert(e.title, e.description)
             } catch (e: Exception) {
                 view?.presentAlert("Something went wrong 😱", e.toString())
             } finally {
@@ -56,4 +53,23 @@ class ApplicationPresenter : ApplicationContract.Presenter() {
             }
         }
     }
+
+    private suspend fun getNewQueryId(): Int {
+        mutex.withLock {
+            queryId += 1
+            return queryId
+        }
+    }
+
+    private suspend fun appendToDepartureTable(
+        newDepartureInfo: DepartureInformation,
+        currentQueryId: Int
+    ) {
+        mutex.withLock {
+            if (queryId == currentQueryId) {
+                view?.appendToDepartureTable(newDepartureInfo)
+            }
+        }
+    }
 }
+

@@ -10,9 +10,11 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
+import kotlinx.coroutines.flow.flow
 
 const val baseUrl = "https://mobile-api-softwire2.lner.co.uk/v1/"
 const val buyTicketsBaseUrl = "https://www.lner.co.uk/buy-tickets/booking-engine/"
+
 
 val client = HttpClient {
     install(JsonFeature) {
@@ -22,28 +24,26 @@ val client = HttpClient {
 
 class AlertException(val title: String, val description: String) : Exception()
 
+fun journeys(originStation: String, destinationStation: String) = flow {
+    var queryUrl: Url? = buildQuery(originStation, destinationStation)
+    do {
+        val (departureInfos, nextQueryUrl) = getDeparturesAndNextQuery(queryUrl!!)
+        departureInfos.forEach { emit(it) }
+        queryUrl = nextQueryUrl
+    } while (queryUrl != null)
+}
+
+suspend fun getDeparturesAndNextQuery(url: Url): Pair<List<DepartureInformation>, Url?> {
+    val queryOutput = queryApiForJourneys(url)
+    return Pair(
+        extractDepartureInfo(queryOutput),
+        queryOutput.nextOutboundQuery?.let { Url(baseUrl + "fares" + it) })
+}
+
 suspend fun queryApiForJourneys(
-    originStation: String,
-    destinationStation: String,
-    noChanges: String = "false",
-    numberOfAdults: String = "1",
-    numberOfChildren: String = "0",
-    journeyType: String = "single",
-    outboundIsArriveBy: String = "false"
+    url: Url
 ): DepartureDetails {
     try {
-        val url = URLBuilder("${baseUrl}fares?")
-            .apply {
-                parameters["originStation"] = originStation
-                parameters["destinationStation"] = destinationStation
-                parameters["noChanges"] = noChanges
-                parameters["numberOfAdults"] = numberOfAdults
-                parameters["numberOfChildren"] = numberOfChildren
-                parameters["journeyType"] = journeyType
-                parameters["outboundDateTime"] = getEarliestSearchableTime()
-                parameters["outboundIsArriveBy"] = outboundIsArriveBy
-            }
-            .build()
         val departures = client.get<DepartureDetails> { url(url) }
         if (departures.outboundJourneys.isEmpty()) throw AlertException(
             "🙅 🚂",
@@ -57,6 +57,7 @@ suspend fun queryApiForJourneys(
     }
 }
 
+
 fun extractDepartureInfo(departureDetails: DepartureDetails): List<DepartureInformation> =
     departureDetails.outboundJourneys.map {
         DepartureInformation(
@@ -64,7 +65,7 @@ fun extractDepartureInfo(departureDetails: DepartureDetails): List<DepartureInfo
             extractSimpleTime(it.arrivalTime),
             convertToHoursAndMinutes(it.journeyDurationInMinutes),
             it.primaryTrainOperator.name,
-            convertToPriceString(it.tickets.map { ticket -> ticket.priceInPennies }.min()),
+            extractPriceString(it.tickets),
             generateBuyTicketUrl(
                 it.originStation.crs,
                 it.destinationStation.crs,
@@ -81,7 +82,9 @@ fun generateBuyTicketUrl(
         "&outm=${departureDateTime.month1}&outd=${departureDateTime.dayOfMonth}" +
         "&outh=${departureDateTime.hours}&outmi=${departureDateTime.minutes}&ret=n"
 
-private fun padEnd(numberString: String, padCharacter: String, desiredLength: Int): String {
+
+fun padEnd(numberString: String, padCharacter: Char, desiredLength: Int): String {
+    if (numberString.length > desiredLength) throw IllegalArgumentException()
     var paddedString = numberString
     while (paddedString.length < desiredLength) {
         paddedString += padCharacter
@@ -89,6 +92,34 @@ private fun padEnd(numberString: String, padCharacter: String, desiredLength: In
     return paddedString
 }
 
-fun convertToPriceString(priceInPennies: Int?) = priceInPennies?.let {
-    "from £${it / 100}.${padEnd("${it % 100}", "0", 2)}"
-} ?: "sold out"
+fun extractPriceString(tickets: List<TicketDetails>): String {
+    val minPrice = tickets.map { ticket -> ticket.priceInPennies }.min() ?: return "sold out"
+    return "from ${convertToPriceString(minPrice)}"
+}
+
+private fun convertToPriceString(priceInPennies: Int): String {
+    if (priceInPennies < 0) throw IllegalArgumentException()
+    return "£${priceInPennies / 100}.${padEnd("${priceInPennies % 100}", '0', 2)}"
+}
+
+fun buildQuery(
+    originStation: String,
+    destinationStation: String,
+    noChanges: String = "false",
+    numberOfAdults: String = "1",
+    numberOfChildren: String = "0",
+    journeyType: String = "single",
+    outboundDateTime: String = getEarliestSearchableTime(),
+    outboundIsArriveBy: String = "false"
+) = URLBuilder("${baseUrl}fares?")
+    .apply {
+        parameters["originStation"] = originStation
+        parameters["destinationStation"] = destinationStation
+        parameters["noChanges"] = noChanges
+        parameters["numberOfAdults"] = numberOfAdults
+        parameters["numberOfChildren"] = numberOfChildren
+        parameters["journeyType"] = journeyType
+        parameters["outboundDateTime"] = outboundDateTime
+        parameters["outboundIsArriveBy"] = outboundIsArriveBy
+    }
+    .build()

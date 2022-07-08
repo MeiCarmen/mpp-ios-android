@@ -6,7 +6,8 @@ interface ApplicationContract {
     interface View {
         fun populateOriginAndDestinationSpinners(stations: List<String>)
         fun setStationSubmitButtonText(text: String)
-        fun setDepartureTable(departures: List<DepartureInformation>)
+        fun clearDepartureTable()
+        fun appendToDepartureTable(departure: DepartureInformation)
         fun presentAlert(title: String, message: String)
     }
 
